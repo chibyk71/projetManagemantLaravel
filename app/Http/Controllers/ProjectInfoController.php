@@ -39,7 +39,8 @@ class ProjectInfoController extends Controller
                     return [
                         'id' => $file->id,
                         'name' => $file->name,
-                        "uploadedBy" => $file->uploadedBy()->only(["id","name","avatar"])
+                        "uploadedBy" => $file->uploadedBy()->only(["id","name","avatar"]),
+                        "date_uploaded" => $file->created_at,
                     ];
                 }),
                 // Add pagination details

@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { readable, writable } from 'svelte/store';
+    import Swal from "sweetalert2"
+	import { writable } from 'svelte/store';
+    import { useForm } from "@inertiajs/svelte";
+    import {  } from "";
     import { IconChevronDown, IconChevronUp, IconCopy, IconDownload, IconFolder, IconPencil, IconTrash } from '@tabler/icons-svelte';
     import { Lightbox } from 'svelte-lightbox';
     import { base, folders } from '@/lib/scripts/userStore';
@@ -16,11 +19,13 @@
     export let data: ProjectFolders;
     $folders = data
     
-    
+    let editFolders = false;
     let activeFolder = $folders[0];
 
+    $:Images = writable(activeFolder.files)
 
-    const table = createTable(activeFolder,{
+
+    const table = createTable(Images,{
         sort: addSortBy(),
         select: addSelectedRows()
     });
@@ -47,7 +52,7 @@
         table.column({
             id: "user",
             header:"Uploaded By",
-            accessor: "userName"
+            accessor: (item) => item.uploadedBy.name
         }),
         table.column({
             id: "date",
@@ -66,12 +71,44 @@
 
     const { allRowsSelected, someRowsSelected, selectedDataIds } = pluginStates.select
 
-    const getSelectedIds = (obj: Record<string, boolean>) => {
+    const getSelectedIds = () => {
         let ids:number[] = []
-        Object.keys(obj).forEach(id=>{
+        Object.keys($selectedDataIds).forEach(id=>{
            ids.push($rows[Number(id)].original.id)
         })
         return ids
+    }
+
+    const form = useForm({
+        folders: $folders.map(folder => ({
+            id: folder.id,
+            name: folder.name
+        }))
+    });
+
+    const submit = () => {
+        $form.post(route("folder.update"));
+    };
+
+    const DeleteFilesForm = useForm({
+        ids: null,
+    });
+
+    const DeleteMultipeFilesSubmit = ()=>{
+        $DeleteFilesForm.delete(route("files.delete"),{
+            onBefore: (e:Event)=>{
+                Swal.fire<boolean|null>({
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover these files",
+                        icon: "warning",
+                    })
+                    .then((willDelete) => {
+                    if (!willDelete) {
+                        e.preventDefault()
+                    }
+                });
+            }
+        })
     }
     
 </script>
@@ -90,29 +127,62 @@
                                     <!--folders-->
                                     <div class="folder-panel">
     
+                                        <!-- svelte-ignore a11y-no-static-element-interactions -->
                                         <div class="folder-header clearfix">
                                             <h5><IconFolder class="ti-folder display-inline-block m-r-4" /> Folders</h5>
-                                            <div class="folder-actions">
+                                            <!-- svelte-ignore a11y-click-events-have-key-events -->
+                                            <div on:click={()=>editFolders = !editFolders} class="folder-actions">
                                                 <IconPencil class='d-inline' size={18} />
                                             </div>
                                         </div>
     
                                         <div class="folders-body p-t-15">
-                                            <div class="folders-list-view">
-    
-                                                <ul>
-                                                    {#each $folders as item , index}
-                                                        <li id="folder_{index}" on:click={()=>{
-                                                            activeFolder = item
-                                                            $filteredFiles = getFilteredFiles(item)
-                                                        }} class="file-folder-menu-item" class:active={activeFolder === item}>
-                                                            <span>{item}</span>
-                                                        </li>
+                                            {#if editFolders}
+                                                <div class="folders-edit-view p-t-10">
+                                                    {#each $form.folders as folder, index (folder.id)}
+                                                        {#if folder.name === "default"}<div class="form-group row">
+                                                            <div class="col-12 each-folder">
+                                                                    <input type="text" class="form-control form-control-sm" value="Default" disabled>
+                                                                    <a href={void(0)} class="delete-button text-default" data-toggle="tooltip" title="This is the default folder and cannot be deleted">
+                                                                        <IconTrash />
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        {:else}
+                                                        <!--item-->
+                                                            <div class="form-group row">
+                                                                <div class="col-12 each-folder">
+                                                                    <input type="text" class="form-control form-control-sm" bind:value={$form.folders[index].name}>
+                                                                    <input type="hidden" bind:value={$form.folders[index].id}>
+                                                                    <a href={void(0)} on:click={()=>Delete("folder",folder.id)} class="delete-button text-dangerr">
+                                                                        <IconTrash />
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        {/if}
                                                     {/each}
-                                                </ul>
-    
-    
-                                            </div>
+                                                
+                                                
+                                                    <!--form buttons-->
+                                                    <div class="text-right">
+                                                        <button on:click={()=> editFolders = false} class="btn btn-default btn-xs text-left">Cancel</button>
+                                                        <button on:click={submit} class="btn btn-danger btn-xs text-left">Submit</button>
+                                                    </div>
+                                                
+                                                </div>
+                                            {:else}
+                                                <div class="folders-list-view">
+                                                    <ul>
+                                                        {#each $folders as item , index}
+                                                            <!-- svelte-ignore a11y-click-events-have-key-events -->
+                                                            <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+                                                            <li id="folder_{index}" on:click={()=>{ activeFolder = item }} class="file-folder-menu-item" class:active={activeFolder === item}>
+                                                                <span>{item.name}</span>
+                                                            </li>
+                                                        {/each}
+                                                    </ul>
+                                                </div>
+                                            {/if}
                                         </div>
     
                                     </div>
@@ -130,7 +200,7 @@
                                                         <IconCopy size={12} /> Copy </button>
         
                                                     <!--delete button-->
-                                                    <button type="button" class="btn btn-sm btn-default" on:click={()=>Delete({body:{action:'file',id:getSelectedIds($selectedDataIds)}})}>
+                                                    <button type="button" class="btn btn-sm btn-default">
                                                         <IconTrash size={12} /> Delete
                                                     </button>
         

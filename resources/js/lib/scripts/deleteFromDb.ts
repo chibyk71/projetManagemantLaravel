@@ -5,7 +5,7 @@ import { notify } from "./notify";
 export const Delete = async (action:string,id:number|string) => {
     Swal.fire({
         title: "Are you sure?",
-        text: action == 'team'? "Continuing will delete this users account and they won't be able to login again":"You won't be able to revert this!",
+        text: action == 'team'? "Continuing will delete this users account and they won't be able to login again": action === "folder" ? "This Will Also Delete all files in this folder" : "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

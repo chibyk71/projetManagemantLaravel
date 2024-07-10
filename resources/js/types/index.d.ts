@@ -20,6 +20,7 @@ interface UploadedBy {
 interface File {
     id: number;
     name: string;
+    "date_uploaded": string;
     uploadedBy: UploadedBy;
 }
 

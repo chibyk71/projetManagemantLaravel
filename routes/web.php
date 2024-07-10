@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function() {
     Route::post("/file/{id}/update",[FilesController::class,"update"])->name("file.update");
     Route::post("/file/{id}/store",[FilesController::class,"store"])->name("file.store");
     Route::delete('/file/{id}',[FilesController::class,"destroy"])->name("file.delete");
+    Route::delete("/files",FilesController::class)->name("files.delete");
 
     Route::post("/milestone/{id}/update",[MilestoneController::class,"update"])->name("milestone.update");
     Route::post("/milestone/{id}/store",[MilestoneController::class,"store"])->name("milestone.store");
