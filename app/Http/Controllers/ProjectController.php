@@ -61,4 +61,41 @@ class ProjectController extends Controller
     {
         $project->delete();
     }
+
+    public function changeStates(Request $request, Project $project) {
+        $validated = $request->validate(["status"=>"required|in:IN_PROGRESS, ON_HOLD, COMPLETED, NOT_STARTED, CANCELED"]);
+
+        switch ($validated["status"]) {
+            case 'COMPLETED':
+                $project->progress = 100;
+                $project->status = $validated["status"];
+                break;
+            case 'NOT_STARTED':
+                $project->progress = 0;
+                $project->status = $validated["status"];
+                break;
+            
+            default:
+                $project->status = $validated["status"];
+                break;
+        }
+
+        $project->save();
+
+    }
+
+    
+    public function updateAssign(Request $request) {
+        // Validate the request
+        $validatedData = $request->validate([
+            'assigned' => 'required|array',
+            'assigned.*' => 'exists:users,id', // Ensure each user ID exists in the users table
+        ]);
+
+        // Find the project
+        $project = Project::findOrFail($request->projectId);
+
+        // Update the assigned users
+        $project->assignedUsers()->sync($validatedData['assigned']);
+    }
 }

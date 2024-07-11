@@ -1,29 +1,22 @@
-<script lang="ts">
+<script>
     import { Modal } from "@sveltestrap/sveltestrap";
     import ModalCloseBtn from "../modals/modalCloseBtn.svelte";
     import { ModalClose } from "@/lib/scripts/closeModal";
     import { useForm } from "@inertiajs/svelte";
     import Svelecte from "svelecte"; 
-    import { onMount } from "svelte";
     import { modal } from "@/lib/scripts/modalToggler";
     import { notify } from "@/lib/scripts/notify";
-    import axios from "axios";
     
     export let id
 
-    id = Array.isArray(id)? id.join() : id;
-    let teams: {id:number,label:string}[]
-    let selected:string[] = []
+    let projectId = Array.isArray(id)? id.join() : id;
 
     // this is the already assigned users
-    export let assigned:{
-        id: string;
-        name: string;
-        avatar: string;
-    }[];
+    export let assigned;
 
     const form =useForm({
-        assigned: null
+        assigned,
+        projectId
     })
 
     const submit = ()=>{
@@ -34,16 +27,6 @@
             }
         })
     }
-    
-    onMount(async ()=> {
-        teams = await axios.get(route("team.api",[id]));
-
-        if (assigned) {
-            $form.assigned = assigned.map((val)=> {
-                return val.id
-            })
-        }
-    })
 </script>
 <Modal isOpen={true} keyboard={false} backdrop='static'>
     <form action={route("project.assign.update")} method="post" on:submit|preventDefault={submit}>
@@ -54,7 +37,7 @@
         <div class="modal-body min-h-200" id="commonModalBody">
             <div class="form-group row">
                 <div class="col-sm-12">
-                    <Svelecte multiple options={teams} bind:value={$form.assigned} name='assigned' />
+                    <Svelecte multiple labelField="name" valueField="id" bind:value={$form.assigned} fetch={route("team.api")} name='assigned' />
                 </div>
             </div>
             <div class="alert alert-info m-t-30"> To remove all assigned users, submit an empty form, this way only admin can update the project</div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
 class TeamController extends Controller
@@ -31,6 +32,12 @@ class TeamController extends Controller
     public function update(Request $request, User $user)
     {
         //
+    }
+
+    public function api() {
+        $users = User::all(["id","name"]);
+
+        return Response::json($users);
     }
 
     /**

@@ -12,6 +12,13 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
+    protected static function booted()
+    {
+        static::created(function(User $user){
+            $user->assignRole(request()->role);
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *

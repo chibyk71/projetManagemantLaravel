@@ -25,7 +25,7 @@
         contract_sum: string;
         date_of_award: string;
         duration: string;
-        assigned?: string[] | undefined;
+        assigned?: number[];
         number?: string | undefined;
     };
     
@@ -50,7 +50,7 @@
 
     const url = id? "project.update" : "project.store";
     const submit = ()=> {
-        $form.post(route(url),{
+        $form.post(route(url,id?id:undefined),{
             onSuccess: ()=> {
                 modal.close()
                 notify({title: "Successful"})
@@ -59,29 +59,7 @@
                 notify({title:"An unexpected error occurred",icon:"error"})
             }
         })
-    }
-
-    let teams: {id:number,label:string}[],
-    contractors: {id:number,label:string}[]
-
-    onMount(async ()=> {
-        // Todo rewrite to work
-        await fetch(base+"api/team.php").then(async (res)=>{
-            let r = await res.json()
-            teams = r.users;
-            contractors = r.contractors
-
-            if (data) {
-                $form.contractor = data.contractor+''
-                $form.due_date = new Date(data.due_date as string).toISOString().substring(0,10);
-                $form.start_date = new Date(data?.start_date as string).toISOString().substring(0,10);
-                $form.date_of_award = new Date(data?.date_of_award as string).toISOString().substring(0,10);
-            }
-        })
-    })
-
-    
-    
+    }   
 </script>
 <Modal keyboard={false} backdrop='static' size='lg' scrollable={false} isOpen={true}>
     <form action={route(url)} method="post" on:submit={submit}>
@@ -137,13 +115,13 @@
                     {#if state === 'new'}
                         <FormGroup>
                             <label slot="label" for="" class="ext-left control-label col-form-label required">Assign Teams*</label>
-                            <Svelecte options={teams} name='assigned' class='svelect-color' bind:value={$form.assigned} multiple placeholder='assign users to manage project'/>
+                            <Svelecte fetch={route("team.api")} name='assigned' required class='svelect-color' bind:value={$form.assigned} multiple placeholder='assign users to manage project'/>
                         </FormGroup>
                     {/if}
 
                     <FormGroup>
                         <label slot="label" for="" class="ext-left control-label col-form-label required">Contractor*</label>
-                        <Svelecte options={contractors} valueField={'id'} class='svelect-color' name='contractor' bind:value={$form.contractor} placeholder='assign users to manage project'/>
+                        <Svelecte fetch={route("contractor.api")} valueField={'id'} labelField={"name"} class='svelect-color' name='contractor' bind:value={$form.contractor} placeholder='assign users to manage project'/>
                     </FormGroup>
                     <div class="line"></div>
 

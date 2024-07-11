@@ -1,17 +1,13 @@
 <script lang="ts">
-    import { modal } from "$lib/scripts/modalToggler";
+    import { modal } from "@/lib/scripts/modalToggler";
     import { FormGroup, Input, Modal } from "@sveltestrap/sveltestrap";
+    import { useForm, page } from "@inertiajs/svelte";
     import ModalCloseBtn from "../modals/modalCloseBtn.svelte";
-    import { ModalClose } from "$lib/scripts/closeModal";
-    import { milestone } from "$lib/scripts/schema";
-    import { superForm, intProxy, defaults, setError } from "sveltekit-superforms";
+    import { ModalClose } from "@/lib/scripts/closeModal";
     import Svelecte from 'svelecte'
     import { onMount } from "svelte";
-    import { zod } from "sveltekit-superforms/adapters";
-    import { base } from "$lib/scripts/userStore";
-    import { convertToFormdata } from "$lib/scripts/convertToFormdata";
-    import { notify } from "$lib/scripts/notify";
-    import { page } from "$app/stores";
+    import { base } from "@/lib/scripts/userStore";
+    import { notify } from "@/lib/scripts/notify";
 
     export let state: 'new'|'edit' = 'new'
     export let data:{
@@ -20,38 +16,33 @@
         progress: number;
         contractor: string;
     };
-    export let id = $page.params.id,
-    contractors:Array<{
+    export let id = $page;
+    console.log(id);
+    
+    let contractors:Array<{
         name: string;
         id: number;
     }>
 
-    const { form, errors, enhance, constraints,delayed } = superForm(defaults(data,zod(milestone)),{
-        SPA: true,
-        validators: zod(milestone),
-        async onUpdate({form}) {
-            if (!form.valid) {
-                setError(form,"Invalid Form Data")
-                return
-            }
-            const res = await fetch(base+"api/project_milestone.php",{
-                body: convertToFormdata({...form.data,state,id}),
-                method: "post",
-                credentials:"include"
-             }).then(r=>r.json())
+    const form = useForm({
+        name: null,
+        status: null,
+        progress: 0,
+        contractor: null,
+        projectId:id
+    })
 
-             if (res.status) {
-                notify()
+    const submit = ()=>{
+        $form.post(route("milestone.store"),{
+            onSuccess: ()=> {
+                notify({
+                    title: "Successful",
+                    titleText: "Milestone Created"
+                })
                 modal.close()
-             }else{
-                notify({icon:"error",title:res.message})
-             }
-        },
-        onError({result}) {
-           console.log(result);
-           
-        }
-    });
+            }
+        })
+    }
 
     onMount(async ()=>{
         contractors = await fetch(base+'/api/team.php').then(async (res)=>{
@@ -59,15 +50,10 @@
             return r.contractors
         })
     })
-
-    const progressProxy = intProxy(form,'progress',{
-        empty:'zero'
-    });
-    
 </script>
 
 <Modal keyboard={false} backdrop='static' isOpen size='lg' on:close={()=>modal.close()}>
-    <form action="{base}api/project_milestone.php" method="post" use:enhance>
+    <form action={route("milestone.store")} method="post" on:submit|preventDefault={submit}>
         <div class="modal-header" id="commonModalHeader">
             <h4 class="modal-title text-capitalize">{state} Milestone</h4>
             <ModalCloseBtn />
@@ -76,12 +62,12 @@
             <input type="hidden" name="state" value={state}>
             <FormGroup>
                 <label for="" class="col-12 text-left control-label col-form-label required">Milestone Name*</label>
-                <Input type="text" class="text-black" invalid={!!$errors.name} feedback={$errors.name} name="name" bind:value={$form.name} {...$constraints.name} />
+                <Input type="text" class="text-black" invalid={!!$form.$errors.name} feedback={$form.$errors.name} name="name" bind:value={$form.name} />
             </FormGroup>
 
             <FormGroup>
                 <label for="von" class="ext-left control-label col-form-label required">Contractor</label> 
-                <Input id='von' list='contractors' bind:value={$form.contractor} name='contractor' type='text' invalid={!!$errors.contractor} {...$constraints.contractor} feedback={$errors.contractor}/>
+                <Input id='von' list='contractors' bind:value={$form.contractor} name='contractor' type='text' invalid={!!$form.$errors.contractor} feedback={$form.$errors.contractor}/>
                 <datalist id="contractors">
                     {#if contractors}
                         {#each contractors as item}
@@ -98,15 +84,15 @@
 
             <FormGroup>
                 <label for="" class="ext-left control-label col-form-label required">Progress ({$form.progress})%</label> 
-                <Input bind:value={$progressProxy} name='progress' type='range' min={0} max={100} invalid={!!$errors.progress} {...$constraints.progress} feedback={$errors.progress} />
+                <Input bind:value={$form.progress} name='progress' type='range' min={0} max={100} invalid={!!$form.$errors.progress} feedback={$form.$errors.progress} />
             </FormGroup>
             <input type="hidden" name="id" value="{id}">
         </div>
         <div class="modal-footer" id="commonModalFooter" style="">
             <button type="button" use:ModalClose class="btn btn-rounded-x btn-secondary waves-effect text-left"
                 data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-rounded-x btn-danger text-left">Submit
-                {#if $delayed}
+            <button type="submit" disabled={$form.proccessing} class="btn btn-rounded-x btn-danger text-left">Submit
+                {#if $form.proccessing}
                 <div class="spinner-border spinner-border-sm text-primary"></div>
                 {/if}
             </button>

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('files', function (Blueprint $table) {
             $table->dropColumn("folder");
-            $table->dropConstrainedForeignId("projectId");
+            $table->dropForeign('files_projectid_foreign');
+            $table->dropColumn('projectId');
         });
     }
 
@@ -24,7 +25,8 @@ return new class extends Migration
     {
         Schema::table('files', function (Blueprint $table) {
             $table->addColumn("string","folder",);
-            $table->addColumn("foreignId","projectId");
+            $table->unsignedBigInteger('projectId');
+            $table->foreign('projectId')->references('id')->on('projects');
         });
     }
 };

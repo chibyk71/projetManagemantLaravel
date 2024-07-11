@@ -9,6 +9,22 @@ class Project extends Model
 {
     use HasFactory;
 
+     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::created(function (Project $project) {
+            Folder::create([
+                'project_id' => $project->id,
+                'project_name' => 'default'
+            ]);
+            foreach (request()->assigned as $userId) {
+                $project->assignedUsers()->attach($userId);
+            }
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *

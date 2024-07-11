@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contractor;
 use App\Models\Milestone;
+use App\Models\Project;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MilestoneController extends Controller
 {
@@ -12,15 +15,9 @@ class MilestoneController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $milestones = Project::find(request()->id)->milestones()->paginate(50);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Inertia::render("Dashboard/Projects/Id/Milestones", compact("milestones"));
     }
 
     /**
@@ -28,23 +25,25 @@ class MilestoneController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'status' => 'required|in:IN_PROGRESS,YET_TO_COMMENCE,COMPLETED',
+            'progress' => 'required|numeric',
+            'contractor' => 'required|string',
+            "projectId" => "required|integer"
+        ]);
+    
+        $contractor_id = Contractor::where("name","=",$validated["contractor"])->pluck("id");
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Milestone $milestone)
-    {
-        //
-    }
+        if (!$contractor_id) {
+            $contractor_id = Contractor::create(["name"=>$validated["contractor"]]);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Milestone $milestone)
-    {
-        //
+        $validated["contractorId"] = $contractor_id;
+
+        Milestone::create($validated);
+        
+        return redirect()->back()->with('success', 'Validation passed!');
     }
 
     /**
@@ -52,7 +51,25 @@ class MilestoneController extends Controller
      */
     public function update(Request $request, Milestone $milestone)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'status' => 'required|in:IN_PROGRESS,YET_TO_COMMENCE,COMPLETED',
+            'progress' => 'required|numeric',
+            'contractor' => 'required|string',
+            "projectId" => "required|integer"
+        ]);
+    
+        $contractor_id = Contractor::where("name","=",$validated["contractor"])->pluck("id");
+
+        if (!$contractor_id) {
+            $contractor_id = Contractor::create(["name"=>$validated["contractor"]]);
+        }
+
+        $validated["contractorId"] = $contractor_id;
+
+        $milestone->update($validated);
+        
+        return redirect()->back()->with('success', 'Validation passed!');
     }
 
     /**
@@ -60,6 +77,6 @@ class MilestoneController extends Controller
      */
     public function destroy(Milestone $milestone)
     {
-        //
+        $milestone->delete();
     }
 }

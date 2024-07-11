@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import 'filepond/dist/filepond.css';
     import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
     import FilePond, { registerPlugin } from 'svelte-filepond';
@@ -12,6 +12,8 @@
     import ModalCloseBtn from "../modals/modalCloseBtn.svelte";
     import { base, folders } from '@/lib/scripts/userStore';
     import { notify } from '@/lib/scripts/notify';
+    import Svelecte from 'svelecte';
+    import axios from 'axios';
 
   // Register the plugins
     registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -20,12 +22,28 @@
 
     const form = useForm({
         folder: null,
-        project_files: null,
-        project_id:id
+        names: null,
+        project_id:id,
+        stage: null,
     })
 
+    const ProcessedFiles = [];
+    async function handleProcess(fieldName, file, metadata, load, error, progress, abort, transfer, options) {
+        const formData = new FormData();
+        formData.append(fieldName, file);
+
+        const response = await axios.post(route("filepond.server.url"), formData);
+
+        if (response.status === 200) {
+            ProcessedFiles.push(response.data);
+            load(response.data);
+        } else {
+            error('Upload failed');
+        }
+    }
+
     const submit = ()=>{
-        // TODO add $form.project_files here
+        $form.names = ProcessedFiles;
         $form.post(route("file.store"),{
             onSuccess: ()=>{
                 notify({title:"Successful",titleText:"Files Have Been Succefully Uploaded",icon:"success",toast:true})
@@ -35,7 +53,7 @@
 
 </script>
 <Modal isOpen backdrop='static' keyboard={false}>
-    <form class="" action="{base}api/save_uploaded_project_files.php" method="post" on:submit|preventDefault={submit}>
+    <form class="" action={route("file.store")} method="post" on:submit|preventDefault={submit}>
         <div class="modal-header" id="commonModalHeader">
             <h4 class="modal-title" id="commonModalTitle">Add File</h4>
             <ModalCloseBtn />
@@ -43,15 +61,15 @@
         <div class="modal-body" id="commonModalBody"><!--fileupload-->
             <div class="form-group row">
                 <div class="col-12">
-                    <FilePond bind:this={fileCont} name='project_files[]' allowMultiple={true} max-file={10} server={{url:base,process:{
-                        url:"/api/upload_project_files.php"
-                    }}} />
+                    <FilePond bind:this={fileCont} name='name[]' allowMultiple={true} max-file={10} server={{ process: handleProcess }} />
                 </div>
             </div>
+
+            <Svelecte bind:value={$form.stage} required name='stage' placeholder="Select The Stage Of The Project" options={["COMPELETE","BEFORE","DURING"]} />
             
             <FormGroup>
                 <label for="browser">Choose your folder or create one by typing it from the list:</label>
-                <Input list="folders" value='Default' name="folder" id="browser" required />
+                <Input list="folders" bind:value={$form.folder} name="folder" id="browser" required />
                 <datalist id="folders">
                     <option value='Default'></option>
                     {#if $folders.length > 0}
