@@ -215,7 +215,7 @@
         
                                         <li role="separator" class="divider"></li>
                                         <li>
-                                            <a href={route("logout")} use:inertia={{method:"pos,t"}}><IconLogout2 class="p-r-4"/> Logout</a>
+                                            <a href={route("logout")} use:inertia={{method:"post"}}><IconLogout2 class="p-r-4"/> Logout</a>
                                         </li>
                                     {:else}
                                         <DropdownItem href='/auth/login/'>

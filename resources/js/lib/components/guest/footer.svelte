@@ -7,20 +7,20 @@
    */
   let scrollTop: HTMLAnchorElement
 
-  onMount(()=> {
-    if (scrollTop) {
-        const togglescrollTop = function() {
-            window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
+    onMount(()=> {
+        if (scrollTop && scrollTop !== undefined) {
+            const togglescrollTop = function() {
+                window.scrollY > 100 ? scrollTop.classList.add('active') : scrollTop.classList.remove('active');
+            }
+            window.addEventListener('load', togglescrollTop);
+            document.addEventListener('scroll', togglescrollTop);
+            scrollTop.addEventListener('click', () => {window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+            })});
         }
-        window.addEventListener('load', togglescrollTop);
-        document.addEventListener('scroll', togglescrollTop);
-        scrollTop.addEventListener('click', () => {window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-        })});
-    }
 
-  })
+    })
 </script>
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer py-4">

@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import "../../css/app.css";
     import ModalComp from "@/lib/components/modals/ModalComp.svelte";
     // import { Styles } from '@sveltestrap/sveltestrap';
 

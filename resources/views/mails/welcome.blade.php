@@ -19,7 +19,7 @@
         <p style="color: #666;">To complete your registration, please click the button below:</p>
 
         <div style="text-align: center; margin-top: 20px;">
-            <a href="{{@routes("login")}}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">Login Now</a>
+            <a href="{{route('login')}}" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">Login Now</a>
         </div>
 
         <hr style="border: 1px solid #ddd; margin: 20px 0;">
@@ -33,7 +33,7 @@
         <p style="color: #666;">If you did not sign up for our website, please ignore this email.</p>
     </div>
 
-    <p style="color: #999; text-align: center; margin-top: 20px;">© {{year("y")}} Zamfara State Project Monitoring Solution. All rights reserved.</p>
+    <p style="color: #999; text-align: center; margin-top: 20px;">© {{date("y")}} Zamfara State Project Monitoring Solution. All rights reserved.</p>
 </body>
 
 </html>

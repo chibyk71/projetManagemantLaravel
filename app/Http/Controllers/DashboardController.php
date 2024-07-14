@@ -14,13 +14,13 @@ class DashboardController extends Controller
         $completedToday = Project::whereDate('completed_date', now()->toDateString())->count();
 
         // Calculate pending projects (assuming 'pending' status)
-        $pendingProjects = Project::where('status', 'pending')->count();
+        $pendingProjects = Project::where('status', 'held')->count();
 
         // Calculate total projects
         $totalProjects = Project::count();
 
         // Calculate held projects (assuming 'held' status)
-        $heldProjects = Project::where('status', 'held')->count();
+        $heldProjects = Project::where('status', 'in_progress')->count();
 
          // Get the authenticated user
          $user = Auth::user();

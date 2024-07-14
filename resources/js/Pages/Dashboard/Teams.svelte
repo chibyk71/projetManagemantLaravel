@@ -74,7 +74,7 @@
                     <div id="list-page-actions">
         
                         <!--ADD NEW ITEM-->
-                        <button on:click={()=>modal.open({comp:CreateUser,prop:{data:data.form}})} type="button" class="btn btn-danger btn-add-circle edit-add-modal-button">
+                        <button on:click={()=>modal.open({comp:CreateUser})} type="button" class="btn btn-danger btn-add-circle edit-add-modal-button">
                             <IconPlus class="d-block ti-plus" />
                         </button>
                     </div>

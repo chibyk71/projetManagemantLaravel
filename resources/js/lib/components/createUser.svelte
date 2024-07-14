@@ -17,7 +17,6 @@
     const submit = ()=>{
         $form.post(route("register"),{
             onSuccess: ()=>{
-                modal.close();
                 notify({
                     position: "top-end",
                     icon: "success",
@@ -26,6 +25,7 @@
                     timer: 1500,
                     toast:true
                 })
+                modal.close();
             },
             onError: ()=> {
                notify({
@@ -42,7 +42,7 @@
 
 </script>
 <Modal backdrop='static' keyboard={false} isOpen size='lg'>
-    <form action={route("register")} method="post" on:submit={submit}>
+    <form action={route("register")} method="post" on:submit|preventDefault={submit}>
         <div class="modal-header" id="commonModalHeader">
             <h4 class="modal-title" id="commonModalTitle">Create A New User</h4>
             <ModalCloseBtn />

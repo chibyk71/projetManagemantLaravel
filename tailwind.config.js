@@ -3,17 +3,20 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
-        './resources/js/**/*.svelte',
-    ],
-    theme: {
+	corePlugins: {
+		preflight: false,
+	},
+	content: [
+		'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+		'./storage/framework/views/*.php',
+		'./resources/views/**/*.blade.php',
+		'./resources/js/**/*.svelte',
+	],
+	theme: {
 		extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
+			fontFamily: {
+				sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+			},
 			screens: {
 				// Don't need xs since Tailwind uses min-width approach
 				// to its media queries.
@@ -23,8 +26,8 @@ export default {
 				xl: '1200px',
 				xxl: '1400px',
 			},
-			container:{
-				center:true,
+			container: {
+				center: true,
 				padding: "0.75rem",
 			},
 			maxWidth: {
@@ -34,18 +37,7 @@ export default {
 				xl: `${1140 / 16}rem`,
 				xxl: `${1320 / 16}rem`,
 			},
-			keyframes: {
-				fadeIn: {
-					"0%": { opacity: 0 },
-					"100%": { opacity: 100 },
-				},
-			},
-			animation: {
-				fadeIn: "fadeIn 0.2s ease-in-out forwards",
-			},
 		}
 	},
-
-
-    plugins: [forms],
+	plugins: [forms],
 };
