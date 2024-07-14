@@ -3,16 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ProjectInfoController extends Controller
 {
     public function milestones(Project $project) {
-        $milstones = $project->milestones()->paginate(50);
+        $milestones = $project->milestones()->with('contractors:id,name')->paginate(50);
 
-        return Inertia::render("Dashboard/Projects/Id/Milestones", compact("milestones"));
+         // Format the result
+         $datas["milestones"] = $milestones->map(function ($milestone) use ($project) {
+            return [
+                'id' => $milestone->id,
+                'name' => $milestone->name,
+                "status"=> $milestone->status,
+                "progress" => $milestone->progress,
+                "projectId" => $project->id,
+                'contractor' => $milestone->contractors->only(["id","name"]),
+            ];
+        });
+
+        // Add pagination details
+        $datas['pagination'] = [
+            'total' => $milestones->total(),
+            'next_url' => $milestones->nextPageUrl(),
+            'previous_url' => $milestones->previousPageUrl(),
+        ];
+
+        return Inertia::render("Dashboard/Projects/Id/Milestones", compact("datas"));
     }
 
     public function details(Project $project) {
@@ -39,7 +56,7 @@ class ProjectInfoController extends Controller
                     return [
                         'id' => $file->id,
                         'name' => $file->name,
-                        "uploadedBy" => $file->uploadedBy()->only(["id","name","avatar"]),
+                        "uploadedBy" => $file->uploadedBy->only(["id","name","avatar"]),
                         "date_uploaded" => $file->created_at,
                     ];
                 }),

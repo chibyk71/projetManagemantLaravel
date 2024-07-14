@@ -20,6 +20,6 @@ class Contractor extends Model
     }
 
     public function milestones() {
-        return $this->hasMany(Milestone::class);
+        return $this->hasMany(Milestone::class,"contractorId");
     }
 }

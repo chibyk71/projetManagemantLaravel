@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script>
     import ModalCloseBtn from "@/lib//components/modals/modalCloseBtn.svelte";
     import { ModalClose } from "@/lib//scripts/closeModal";
     import { useForm } from "@inertiajs/svelte";
@@ -8,18 +8,12 @@
     import { notify } from "@/lib//scripts/notify";
     
 
-    export let data: {
-        name: string;
-        email: string;
-        phone: string;
-        role: string;
-    };
+    export let data;
 
     const form = useForm({
         name: data.name,
         email: data.email,
         phone: data.phone,
-        role: data.role,
     })
 
     const submit = ()=>{
@@ -64,15 +58,6 @@
                         <Input bind:value={$form.phone} name='phone' type='tel' invalid={!!$form.errors.phone} feedback={$form.errors.phone} />
                     </FormGroup>
                     <!--/#[edit] phone-->
-
-                    <FormGroup>  
-                        <label slot="label" for="" class="ext-left control-label col-form-label required">role*</label>
-                        <Svelecte options={['ADMIN','MODERATOR']} bind:value={$form.role} name='role' class='text-black' /> 
-                        {#if !!$form.errors.role}
-                            <span class="error text-danger">{$form.errors.role}</span>
-                        {/if}
-                    </FormGroup>
-
                     <!--notes-->
                     <div class="row">
                         <div class="col-12">

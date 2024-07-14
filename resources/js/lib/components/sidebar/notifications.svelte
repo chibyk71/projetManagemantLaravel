@@ -2,7 +2,7 @@
     import { toggler } from '@/lib/scripts/panelToggler';
     import { IconBell, IconX } from '@tabler/icons-svelte';
     import { slide } from 'svelte/transition';
-  import { Svrollbar } from 'svrollbar';
+    import { Svrollbar } from 'svrollbar';
 
     const id = 'notification';
 
@@ -52,15 +52,9 @@
                 <div class="r-panel-body p-t-40" id="sidepanel-notifications-body">
                     <!--mark all read-->
                     <div class="sidepanel-notifications-mark-all-read hidden" id="sidepanel-notifications-mark-all-read">
-                        <a
-                            href={void(0)}
-                            id="topnav-notification-mark-all-read"
-                            data-url="https://midnight.growcrm.io/events/mark-allread-my-events"
-                            data-progress-bar="hidden"
-                            >Dismiss All Notifications
-                        </a>
+                        <a href={void(0)}>Dismiss All Notifications</a>
                     </div>
-                    <a href={void(0)} id="topnav-notification-mark-all-read" data-url="https://midnight.growcrm.io/events/mark-allread-my-events" data-progress-bar="hidden">
+                    <a href={void(0)}>
                         <div id="sidepanel-notifications-events">
                             <!--dynamic content-->
                         </div>
@@ -68,10 +62,7 @@
                         <!--load more button-->
                     </a>
                     <div class="autoload d-none" id="events-panel-loadmore-button-container">
-                        <a href={void(0)} id="topnav-notification-mark-all-read" data-url="https://midnight.growcrm.io/events/mark-allread-my-events" data-progress-bar="hidden">
-                        </a>
-                        <a data-url="" data-loading-target="" href={void(0)} class="btn btn-rounded btn-secondary js-ajax-ux-request" id="events-panel-load-more-button d-none">show more</a
-                        >
+                        <a href={void(0)} class="btn btn-rounded btn-secondary">show more</a>
                     </div>
                     <!--load more button-->
                 </div>

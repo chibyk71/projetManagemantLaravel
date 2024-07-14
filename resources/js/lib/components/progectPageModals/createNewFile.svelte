@@ -2,18 +2,19 @@
     import 'filepond/dist/filepond.css';
     import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
     import FilePond, { registerPlugin } from 'svelte-filepond';
-    import { useForm } from "@inertiajs/svelte";
+    import { useForm, page } from "@inertiajs/svelte";
 	import { ModalClose } from '@/lib/scripts/closeModal';
     // Import the Image EXIF Orientation and Image Preview plugins
     import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
     import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 
-    import { FormGroup, Input, Modal } from "@sveltestrap/sveltestrap";
+    import { FormFeedback, FormGroup, Input, Modal } from "@sveltestrap/sveltestrap";
     import ModalCloseBtn from "../modals/modalCloseBtn.svelte";
-    import { base, folders } from '@/lib/scripts/userStore';
+    import { folders } from '@/lib/scripts/userStore';
     import { notify } from '@/lib/scripts/notify';
     import Svelecte from 'svelecte';
     import axios from 'axios';
+    import { modal } from '@/lib/scripts/modalToggler';
 
   // Register the plugins
     registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -23,7 +24,7 @@
     const form = useForm({
         folder: null,
         names: null,
-        project_id:id,
+        project_id:$page.props.project_id,
         stage: null,
     })
 
@@ -32,7 +33,7 @@
         const formData = new FormData();
         formData.append(fieldName, file);
 
-        const response = await axios.post(route("filepond.server.url"), formData);
+        const response = await axios.post(route("filepond-process"), formData);
 
         if (response.status === 200) {
             ProcessedFiles.push(response.data);
@@ -47,6 +48,10 @@
         $form.post(route("file.store"),{
             onSuccess: ()=>{
                 notify({title:"Successful",titleText:"Files Have Been Succefully Uploaded",icon:"success",toast:true})
+                modal.close();
+            },
+            onException: (e)=>{
+                console.log(e);
             }
         })
     }
@@ -61,23 +66,19 @@
         <div class="modal-body" id="commonModalBody"><!--fileupload-->
             <div class="form-group row">
                 <div class="col-12">
-                    <FilePond bind:this={fileCont} name='name[]' allowMultiple={true} max-file={10} server={{ process: handleProcess }} />
+                    <FilePond bind:this={fileCont} name='names[]' allowMultiple={true} max-file={10} server={{ process: handleProcess, revert: route("filepond-revert") }} />
+                    <FormFeedback>{$form.errors.names||""}</FormFeedback>
                 </div>
             </div>
-
-            <Svelecte bind:value={$form.stage} required name='stage' placeholder="Select The Stage Of The Project" options={["COMPELETE","BEFORE","DURING"]} />
+            <FormGroup>
+                <Svelecte bind:value={$form.stage} required name='stage' placeholder="Select The Stage Of The Project" options={["COMPLETE","BEFORE","DURING"]} />
+                <FormFeedback>{$form.errors.stage||""}</FormFeedback>
+            </FormGroup>
             
             <FormGroup>
                 <label for="browser">Choose your folder or create one by typing it from the list:</label>
-                <Input list="folders" bind:value={$form.folder} name="folder" id="browser" required />
-                <datalist id="folders">
-                    <option value='Default'></option>
-                    {#if $folders.length > 0}
-                        {#each $folders as item}
-                            <option value={item}>
-                        {/each}
-                    {/if}
-                </datalist>
+                <Svelecte options={$folders} bind:value={$form.folder} name="folder" required creatable keepCreated labelField="name" valueField="name" />
+                <FormFeedback>{$form.errors.folder||""}</FormFeedback>
             </FormGroup>
             <input type="hidden" name="project_id" value={id}>
         </div>

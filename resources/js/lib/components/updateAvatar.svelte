@@ -29,7 +29,7 @@
         const formData = new FormData();
         formData.append(fieldName, file, file.name);
 
-        const response = await axios.post(route("filepond.server.url"), formData);
+        const response = await axios.post(route("filepond-process"), formData);
 
         if (response.status === 200) {
             $form.avatar = response.data;
@@ -67,15 +67,16 @@
             <!--fileupload-->
             <div class="form-group row">
                 <div class="col-12">
-                    <FilePond bind:this={fileCont} name='avatar' server={{ process: handleProcess }} />
+                    <FilePond bind:this={fileCont} name='avatar' server={{ process: handleProcess,
+                        revert: route("filepond-revert"), }} />
                 </div>
             </div>
         </div>
         <div class="modal-footer" id="commonModalFooter">
             <button type="button" use:ModalClose class="btn btn-rounded-x btn-secondary text-left" data-dismiss="modal">Close</button>
-            <button type="submit" name="u" class="btn btn-rounded-x btn-danger text-left commonModalSubmitButton">
+            <button type="submit" disabled={$form.proccessing} class="btn btn-rounded-x btn-danger text-left commonModalSubmitButton">
                 Submit
-                {#if $submitting}
+                {#if $form.proccessing}
                     <div class="spinner-border spinner-border-sm text-primary"></div>
                 {/if}
             </button>

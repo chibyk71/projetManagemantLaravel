@@ -9,7 +9,8 @@
     import { modal } from '@/lib/scripts/modalToggler';
     import { Delete } from '@/lib/scripts/deleteFromDb';
     import DasboardLayout from '@/layouts/dasboardLayout.svelte';
-    export let data
+    export let contractors;
+
 </script>
 
 <DasboardLayout>
@@ -110,7 +111,7 @@
                                     </thead>
                                     <tbody id="clients-td-container">
                                        
-                                        {#each data.contractors as {id,name,email,url,projects}}
+                                        {#each contractors.data as {id,name,email,url,projects} (id)}
                                             <tr id="client_22">
             
                                                 <!--tableconfig_column_1 [client_id]-->
@@ -137,7 +138,7 @@
                                                     <!--action button-->
                                                     <span class="list-table-action dropdown font-size-inherit">
                                                         <!--delete-->
-                                                        <button type="button" on:click={()=>Delete({url:'/api/delete',body:{action:'contractor',id}})} id="delete" class="btn btn-outline-danger btn-circle btn-sm confirm-action-danger">
+                                                        <button type="button" on:click={()=>Delete('contractor',id)} id="delete" class="btn btn-outline-danger btn-circle btn-sm confirm-action-danger">
                                                             <IconTrash class="sl-icon-trash" />
                                                             <Tooltip target='delete'>Delete Contractor</Tooltip>
                                                         </button>

@@ -17,7 +17,7 @@ class Project extends Model
         static::created(function (Project $project) {
             Folder::create([
                 'project_id' => $project->id,
-                'project_name' => 'default'
+                'name' => 'default'
             ]);
             foreach (request()->assigned as $userId) {
                 $project->assignedUsers()->attach($userId);
@@ -32,7 +32,7 @@ class Project extends Model
      */
     protected $fillable = [
         'title',
-        'contractorId',
+        'contractor_id',
         'project_number',
         "date_of_award",
         "contract_sum",
@@ -54,15 +54,15 @@ class Project extends Model
 
     public function milestones()
     {
-        return $this->hasMany(Milestone::class);
+        return $this->hasMany(Milestone::class, "projectId");
     }
 
     public function contractors()
     {
-        return $this->belongsTo(Contractor::class);
+        return $this->belongsTo(Contractor::class, "contractor_id");
     }
 
     public function folders() {
-        return $this->hasMany(Folder::class);
+        return $this->hasMany(Folder::class, "project_id");
     }
 }

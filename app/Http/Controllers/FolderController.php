@@ -12,10 +12,10 @@ class FolderController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(["name" => "required|regex:/^[a-zA-Z0-9_.]+$/|min:4", "project_id" => "required"]);
+        $validated = $request->validate(["name" => "required|regex:/([a-zA-Z0-9_.\s]+)$/|min:4", "project_id" => "required"]);
         Folder::create($validated);
 
-        return back()->with("success","folder created successfully");
+        // return back()->with("success","folder created successfully");
     }
 
     /**
@@ -34,8 +34,6 @@ class FolderController extends Controller
                 $folderModel->save();
             }
         }
-
-        return redirect()->back()->with('success', 'Folders updated successfully!');
     }
 
     /**

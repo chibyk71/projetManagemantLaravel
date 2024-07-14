@@ -10,5 +10,5 @@
 
 </script>
 
-<img bind:this={image} src='{base}uploaded/avatar/{src}' alt={title} class="img-circle avatar-xsmall">
+<img bind:this={image} src='/storage/{src}' alt={title} class="img-circle avatar-xsmall">
 <Tooltip target={image}>{title}</Tooltip>

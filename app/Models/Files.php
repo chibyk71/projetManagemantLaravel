@@ -11,21 +11,16 @@ class Files extends Model
 
     protected $fillable = [
         "name",
-        "folder",
+        "folder_id",
         "stage",
         "userId",
-        "projectId"
     ];
 
     public function uploadedBy() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, "userId");
     }
 
-    public function projects() {
-        return $this->belongsTo(Project::class);
-    }
-
-    public function name() {
+    public function folder() {
         return $this->belongsTo(Folder::class);
     }
 }

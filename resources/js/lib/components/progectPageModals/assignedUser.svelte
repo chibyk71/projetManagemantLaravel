@@ -9,14 +9,18 @@
     
     export let id
 
-    let projectId = Array.isArray(id)? id.join() : id;
+    export let projectIds = [];
+
+    if (id) {
+        projectIds.push(id)
+    }
 
     // this is the already assigned users
     export let assigned;
 
     const form =useForm({
         assigned,
-        projectId
+        projectIds
     })
 
     const submit = ()=>{

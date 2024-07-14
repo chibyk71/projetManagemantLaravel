@@ -1,9 +1,8 @@
 <script lang="ts">
     import Swal from "sweetalert2"
-	import { writable } from 'svelte/store';
-    import { useForm } from "@inertiajs/svelte";
-    import {  } from "";
-    import { IconChevronDown, IconChevronUp, IconCopy, IconDownload, IconFolder, IconPencil, IconTrash } from '@tabler/icons-svelte';
+	import { derived, writable } from 'svelte/store';
+    import { useForm, page } from "@inertiajs/svelte";
+    import { IconChevronDown, IconChevronUp, IconDots, IconDownload, IconFolder, IconTrash, IconCirclePlus, IconEdit } from '@tabler/icons-svelte';
     import { Lightbox } from 'svelte-lightbox';
     import { base, folders } from '@/lib/scripts/userStore';
     import { fDate } from '@/lib/scripts/fdate';
@@ -15,14 +14,18 @@
     import SelectIndicator from '../selectIndicator.svelte';
     import ProjectLayout from './ProjectLayout.svelte';
     import type { ProjectFolders } from '@/types';
+    import { Tooltip, Dropdown,  DropdownToggle, DropdownMenu, FormGroup, Input } from "@sveltestrap/sveltestrap";
+    import { notify } from "@/lib/scripts/notify";
     
     export let data: ProjectFolders;
     $folders = data
+    let folderView:"new"|"edit"|undefined = undefined;
     
-    let editFolders = false;
-    let activeFolder = $folders[0];
+    // Create a writable store for the active folder
+    let activeFolder = writable($folders[0]);
 
-    $:Images = writable(activeFolder.files)
+    // Create a derived store for the images in the active folder
+    const Images = derived(activeFolder, $activeFolder => $activeFolder.files);
 
 
     const table = createTable(Images,{
@@ -86,6 +89,24 @@
         }))
     });
 
+    const createFolderForm = useForm({
+        name: null,
+        project_id:$page.props.project_id
+    })
+
+    const createForderSubmit = ()=>{
+        $createFolderForm.post(route("folder.store"),{
+            onSuccess:()=>{
+                notify({
+                    title:"Succesful",
+                    icon:"success",
+                    timer:1500,
+                    toast:true
+                })
+            }
+        })
+    }
+
     const submit = () => {
         $form.post(route("folder.update"));
     };
@@ -94,7 +115,10 @@
         ids: null,
     });
 
+
+
     const DeleteMultipeFilesSubmit = ()=>{
+        $DeleteFilesForm.id = getSelectedIds();
         $DeleteFilesForm.delete(route("files.delete"),{
             onBefore: (e:Event)=>{
                 Swal.fire<boolean|null>({
@@ -110,9 +134,12 @@
             }
         })
     }
+
+    $:console.log($activeFolder);
+    
     
 </script>
-<ProjectLayout data>
+<ProjectLayout>
     <div class="row m-t-10" id="projects-tab-single-screen">
         <!--dynamic ajax section-->
         <div class="col-lg-12">
@@ -128,22 +155,33 @@
                                     <div class="folder-panel">
     
                                         <!-- svelte-ignore a11y-no-static-element-interactions -->
-                                        <div class="folder-header clearfix">
-                                            <h5><IconFolder class="ti-folder display-inline-block m-r-4" /> Folders</h5>
+                                        <div class="folder-header d-flex align-items-center justify-content-between">
+                                            <h5><IconFolder class="display-inline-block m-r-4" /> Folders</h5>
                                             <!-- svelte-ignore a11y-click-events-have-key-events -->
-                                            <div on:click={()=>editFolders = !editFolders} class="folder-actions">
-                                                <IconPencil class='d-inline' size={18} />
-                                            </div>
+                                             <Dropdown class="">
+                                                <DropdownToggle class="btn-sm bg-transparent">
+                                                    <IconDots />
+                                                </DropdownToggle>
+                                                <DropdownMenu>
+                                                    <a class="dropdown-item" on:click={()=> createFolder = !createFolder} href={void(0)} >
+                                                        <IconCirclePlus class='d-inline' size={18} /> Add New Folder</a>
+                                                    <!--edit_folders-->
+                                                    <a class="dropdown-item" href={void(0)} on:click={()=>editFolders = !editFolders}>
+                                                        <IconEdit class='d-inline' size={18} /> Edit Folders</a>
+                                                </DropdownMenu>
+                                             </Dropdown>
                                         </div>
     
                                         <div class="folders-body p-t-15">
-                                            {#if editFolders}
+                                            {#if folderView === "edit"}
                                                 <div class="folders-edit-view p-t-10">
                                                     {#each $form.folders as folder, index (folder.id)}
-                                                        {#if folder.name === "default"}<div class="form-group row">
-                                                            <div class="col-12 each-folder">
+                                                        {#if folder.name === "default"}
+                                                            <div class="form-group row">
+                                                                <div class="col-12 each-folder">
                                                                     <input type="text" class="form-control form-control-sm" value="Default" disabled>
-                                                                    <a href={void(0)} class="delete-button text-default" data-toggle="tooltip" title="This is the default folder and cannot be deleted">
+                                                                    <a href={void(0)} id="default" class="delete-button text-default">
+                                                                        <Tooltip target='default' title="This is the default folder and cannot be deleted" />
                                                                         <IconTrash />
                                                                     </a>
                                                                 </div>
@@ -165,10 +203,23 @@
                                                 
                                                     <!--form buttons-->
                                                     <div class="text-right">
-                                                        <button on:click={()=> editFolders = false} class="btn btn-default btn-xs text-left">Cancel</button>
+                                                        <button on:click={()=> folderView= undefined} class="btn btn-default btn-xs text-left">Cancel</button>
                                                         <button on:click={submit} class="btn btn-danger btn-xs text-left">Submit</button>
                                                     </div>
                                                 
+                                                </div>
+                                            {:else if folderView === "new"}
+                                                <div class="folders-add-view">
+                                                    <!--item-->
+                                                    <FormGroup>
+                                                        <label for="" class="col-12 text-left control-label col-form-label">Folder Name</label>
+                                                        <Input type="text" class="form-control form-control-sm" name="name" bind:value={$createFolderForm.name} feedback={$createFolderForm.errors.name} />
+                                                    </FormGroup>
+                                                    <!--form buttons-->
+                                                    <div class="text-right">
+                                                        <button on:click={()=> folderView = undefined} class="btn btn-default btn-xs">Cancel</button>
+                                                        <button on:click={createForderSubmit} class="btn btn-danger btn-xs">Submit</button>
+                                                    </div>
                                                 </div>
                                             {:else}
                                                 <div class="folders-list-view">
@@ -176,7 +227,7 @@
                                                         {#each $folders as item , index}
                                                             <!-- svelte-ignore a11y-click-events-have-key-events -->
                                                             <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-                                                            <li id="folder_{index}" on:click={()=>{ activeFolder = item }} class="file-folder-menu-item" class:active={activeFolder === item}>
+                                                            <li id="folder_{index}" on:click={()=>{ $activeFolder = item }} class="file-folder-menu-item" class:active={$activeFolder.id === item.id}>
                                                                 <span>{item.name}</span>
                                                             </li>
                                                         {/each}
@@ -195,12 +246,8 @@
                                                 <div class="x-buttons">
                                                     <button type="button" class="btn btn-sm btn-default"><i class="ti-share-alt"></i> Move </button>
         
-                                                    <!--copy button-->
-                                                    <button type="button" class="btn btn-sm btn-default edit-add-modal-button reset-target-modal-form">
-                                                        <IconCopy size={12} /> Copy </button>
-        
                                                     <!--delete button-->
-                                                    <button type="button" class="btn btn-sm btn-default">
+                                                    <button on:click={DeleteMultipeFilesSubmit} type="button" class="btn btn-sm btn-default">
                                                         <IconTrash size={12} /> Delete
                                                     </button>
         
@@ -248,14 +295,16 @@
                                                                             {#if cell.column.id == "name"}
                                                                             <div class="preview-image-thumb">
                                                                                 <Lightbox>
-                                                                                    <img class="lists-table-thumb" alt="" src="{base}uploaded/projects/{cell.value}">
+                                                                                    <img class="lists-table-thumb" alt="" src="storage/{cell.value}">
                                                                                 </Lightbox>
                                                                             </div>                                                                        
-                                                                                <a target="_blank" href="{base}uploaded/projects/{cell.value}" download={row.original.folder}><Render of={cell.render()} /></a>
+                                                                                <a target="_blank" href="storage/{cell.value}">
+                                                                                    <Render of={cell.render()} />
+                                                                                </a>
                                                                             {:else if cell.column.id.includes('date')}
                                                                                 {fDate(cell.value)}
                                                                             {:else if cell.column.id == "user"}
-                                                                            <img src="{base}uploaded/avatar/{row.original.avatar}" alt="user" class="img-circle avatar-xsmall"> {cell.value}
+                                                                                <img src="storage/{row.original.uploadedBy.avatar}" alt="user" class="img-circle avatar-xsmall"> {cell.value}
                                                                             {:else}
                                                                                 <Render of={cell.render()} />
                                                                             {/if}
@@ -266,8 +315,8 @@
                                                                         <!--action button-->
                                                                         <span class="list-table-action dropdown font-size-inherit">
                                                                             <!--delete-->
-                                                                            <button type="button" on:click={()=> Delete({body:{action:'file',id:row.original.id}})} title="Delete" class="btn btn-outline-danger btn-circle btn-sm confirm-action-danger"> <IconTrash class="sl-icon-trash" /></button>
-                                                                            <a href="{base}uploaded/projects/{row.original.name}" title="Download" class="btn btn-outline-info btn-circle btn-sm" download>
+                                                                            <button type="button" on:click={()=> Delete('file',row.original.id)} title="Delete" class="btn btn-outline-danger btn-circle btn-sm confirm-action-danger"> <IconTrash class="sl-icon-trash" /></button>
+                                                                            <a href="storage/{row.original.name}" title="Download" class="btn btn-outline-info btn-circle btn-sm" download>
                                                                                 <IconDownload class="ti-download" />
                                                                             </a>
                                                                         </span>

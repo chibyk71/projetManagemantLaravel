@@ -7,6 +7,9 @@ declare module 'ziggy-js' {
     "filepond-head": [],
     "filepond-revert": [],
     "dashboard": [],
+    "profile.update": [],
+    "profile.delete": [],
+    "avatar.update": [],
     "project.index": [],
     "project.show": [
         {
@@ -47,6 +50,7 @@ declare module 'ziggy-js' {
             "required": true
         }
     ],
+    "contractor.api": [],
     "team.index": [],
     "team.update": [
         {
@@ -60,6 +64,7 @@ declare module 'ziggy-js' {
             "required": true
         }
     ],
+    "team.api": [],
     "project.details": [
         {
             "name": "id",
@@ -79,6 +84,12 @@ declare module 'ziggy-js' {
         }
     ],
     "project.status.change": [
+        {
+            "name": "id",
+            "required": true
+        }
+    ],
+    "project.assigned.update": [
         {
             "name": "id",
             "required": true

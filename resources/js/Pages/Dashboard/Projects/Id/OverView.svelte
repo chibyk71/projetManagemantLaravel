@@ -60,7 +60,7 @@
                                 <div class="card-body p-t-0 p-b-0">
                                     <!--[client details]-->
                                     <div class="p-b-20">
-                                        <h6><a href={void(0)}>{project?.contractor_name}</a></h6>
+                                        <h6><a href={void(0)}>{project?.contractor.name}</a></h6>
                                     </div>
     
                                     <!--assigned-->
@@ -69,7 +69,7 @@
                                             <div class="panel-label p-b-3">Assigned</div>
                                             <div>
                                                 {#if project?.team}
-                                                    {#each JSON.parse(project.team) as {user}}
+                                                    {#each project.team as user}
                                                          <Avatar title='{user?.name}' src={user?.avatar} />
                                                     {/each}
                                                 {/if}

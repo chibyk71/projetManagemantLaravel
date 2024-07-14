@@ -1,15 +1,13 @@
-<script>
+<script lang="ts">
     import { page } from '@inertiajs/svelte'
     import { Container } from "@sveltestrap/sveltestrap";
     import ActionButtons from "./actionButtons.svelte";
     import DasboardLayout from '@/layouts/dasboardLayout.svelte';
 
-    const projectId = $page.params.id
-    $:currentPath = $page.url;
-    $:isHome = currentPath == "/projects"
-
-    export let data;
-    
+    const projectId = $page.props.project_id
+    $:currentPath= $page.url as  string;
+    const pattern = /^\/project\/(\w+)$/;
+    $:isHome = currentPath.match(pattern)
 </script>
 <DasboardLayout>
     <div class="page-wrapper">
@@ -20,7 +18,7 @@
     
                     <!-- Page Title & Bread Crumbs -->
                     <div class="col-md-12 col-lg-6 align-self-center">
-                        <h3 class="text-themecolor">{data.projectDetails?.title}</h3>
+                        <h3 class="text-themecolor">{$page.props.project_title}</h3>
                         <!--crumbs-->
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">App</li>
@@ -43,20 +41,20 @@
                         <ul data-modular-id="project_tabs_menu" class="nav nav-tabs profile-tab project-top-nav list-pages-crumbs" role="tablist">
                             <!--overview-->
                             <li class="nav-item">
-                                <a class="nav-link tabs-menu-item" class:active={isHome} href="/projects/{projectId}" role="tab" id="tabs-menu-overview">Overview</a>
+                                <a class="nav-link tabs-menu-item" class:active={isHome} href={route("project.show",projectId)} role="tab" id="tabs-menu-overview">Overview</a>
                             </li>
                             <!--details-->
                             <li class="nav-item">
-                                <a class="nav-link tabs-menu-item" class:active={currentPath == 'details'} href="/projects/{projectId}/details" role="tab">Details</a>
+                                <a class="nav-link tabs-menu-item" class:active={currentPath.endsWith('details')} href={route("project.details",projectId)} role="tab">Details</a>
                             </li>
                             <!--[milestones]-->
                             <li class="nav-item">
-                                <a class="nav-link tabs-menu-item" class:active={currentPath == 'milestones'} href="/projects/{projectId}/milestones" role="tab">Milestones</a>
+                                <a class="nav-link tabs-menu-item" class:active={currentPath.endsWith('milestones')} href={route("project.milestones",projectId)} role="tab">Milestones</a>
                             </li>
     
                             <!--[files]-->
                             <li class="nav-item">
-                                <a class="nav-link tabs-menu-item" class:active={currentPath == 'files'} href="/projects/{projectId}/files" role="tab">Files</a>
+                                <a class="nav-link tabs-menu-item" class:active={currentPath.endsWith('files')} href={route("project.files",projectId)} role="tab">Files</a>
                             </li>
                         </ul>
                         <!-- Tab panes -->

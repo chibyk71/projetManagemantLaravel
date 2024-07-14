@@ -16,31 +16,15 @@
     import SelectIndicator from './selectIndicator.svelte';
     import SelectAll from './selectAll.svelte';
     import DasboardLayout from '@/layouts/dasboardLayout.svelte';
+    import type { Project } from '@/types';
+    import axios from 'axios';
+    import { router } from "@inertiajs/svelte";
+    import Swal from 'sweetalert2';
     
 
     export let data;
-    
-    const projects = readable<{
-    id: string;
-    title: string;
-    contractorId: string;
-    start_date: string;
-    due_date: string;
-    canceled_date: string | null;
-    completed_date: string | null;
-    status: string;
-    progress: string;
-    description: string;
-    created_by_id: string;
-    contract_sum: string;
-    date_of_award: string;
-    duration: string | null;
-    project_number: string;
-    contractor_name: string;
-    files: string;
-    milestones: string;
-    team: string; // Note: This should ideally be an array of objects, but the provided data is a string
-}[]>(data.projects.data);
+
+    const projects = readable<Project[]>(data.projects.data);
     
     const table = createTable(projects,{
         sort: addSortBy(),
@@ -135,9 +119,9 @@
     const { allRowsSelected, someRowsSelected, selectedDataIds } = pluginStates.select
     const { hiddenColumnIds } = pluginStates.hidden
 
-    const getSelectedIds = (obj: Record<string, boolean>) => {
+    const getSelectedIds = () => {
         let ids:number[] = []
-        Object.keys(obj).forEach(id=>{
+        Object.keys($selectedDataIds).forEach(id=>{
            ids.push($rows[Number(id)].original.id)
         })
         return ids
@@ -154,6 +138,33 @@
                 return id !== str
             })
         }
+    }
+
+    const DeleteProjects = async ()=>{
+        Swal.fire({
+            title: "Do you want to save the changes?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            denyButtonText: `Don't save`
+        }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                const res = await axios.post(route("projects.delete"),{projectIds:getSelectedIds()})
+                .then((req)=>{
+                    Swal.fire({
+                        title: req.data.message,
+                        icon: req.data.status,
+                        toast:true
+                    })
+                    if (req.data.status == "success") {
+                        router.reload()
+                    }
+                });
+            } else if (result.isDenied) {
+                Swal.fire({title:"Projects were not Deleted!",icon:"info",toast:true,timer:1500,timerProgressBar:true});
+            }
+        });
     }
 
     let showHiddenFilter = false
@@ -316,14 +327,14 @@
                     <div class="col-12 align-self-center checkbox-actions box-shadow-minimum" class:hidden={!$someRowsSelected}>
                         <!--button-->
                         <div class="x-buttons">
-                            <button type="button" class="btn btn-sm btn-default" on:click={()=> Delete({body:{action:'project',id:getSelectedIds($selectedDataIds)}})}>
+                            <button type="button" class="btn btn-sm btn-default" on:click={DeleteProjects}>
                                 <IconTrash size={12} /> Delete
                             </button>
                             <!--change status-->
-                            <button type="button" class="btn btn-sm btn-default" on:click={()=> modal.open({comp:ChangeStatus,prop:{id:getSelectedIds($selectedDataIds)}})}>
+                            <button type="button" class="btn btn-sm btn-default" on:click={()=> modal.open({comp:ChangeStatus,prop:{projectIds:getSelectedIds()}})}>
                                 <IconBookmark size={12} /> Change Status
                             </button>
-                            <button type="button" class="btn btn-sm btn-default" on:click={()=> modal.open({comp:AssignedUser,prop:{id:getSelectedIds($selectedDataIds)}})}>
+                            <button type="button" class="btn btn-sm btn-default" on:click={()=> modal.open({comp:AssignedUser,prop:{projectIds:getSelectedIds()}})}>
                                 <IconUsers size={12} /> Assign Users
                             </button>
                         </div>
@@ -379,7 +390,7 @@
                                                             <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
                                                             <td {...attrs}>
                                                                 {#if cell.column.id == 'title'}
-                                                                    <a href="projects/{row.original.id}"><Render of={cell.render()} /></a>
+                                                                    <a href={route("project.show",row.original.id)}><Render of={cell.render()} /></a>
                                                                 {:else if cell.column.id == "contractor"}
                                                                     {row.original.contractor.name}
     
@@ -390,7 +401,7 @@
                                                                     <Progress style='height:12px' color='primary' max={100} value={cell.value} />
     
                                                                 {:else if cell.column.id.includes('team')}
-                                                                    {#each JSON.parse(cell.value) as user}
+                                                                    {#each cell.value as user}
                                                                         <Avatar title={user?.name} src={user?.avatar||''} />
                                                                     {/each}
     
@@ -409,7 +420,7 @@
                                                             <!--action button-->
                                                             <span class="list-table-action dropdown font-size-inherit">
                                                                 <!--[delete]-->
-                                                                <button type="button" title="Delete" on:click={()=> Delete({body:{id:row.original.id,action:'projects'}})} class="btn btn-outline-danger btn-circle btn-sm">
+                                                                <button type="button" title="Delete" on:click={()=> Delete("project",row.original.id)} class="btn btn-outline-danger btn-circle btn-sm">
                                                                     <IconTrash />
                                                                 </button>
                                                                 <!--[edit]-->
@@ -419,7 +430,7 @@
                                                                     <IconNote class="sl-icon-note" />
                                                                     <Tooltip target='edit'>Edit</Tooltip>
                                                                 </button>
-                                                                <button type="button" title="Assigned Users" on:click={()=> modal.open({comp:AssignedUser,prop:{team:JSON.parse(row.original.team),id:row.original.id}})} class="btn btn-outline-warning btn-circle btn-sm">
+                                                                <button type="button" title="Assigned Users" on:click={()=> modal.open({comp:AssignedUser,prop:{team:row.original.team,id:row.original.id}})} class="btn btn-outline-warning btn-circle btn-sm">
                                                                     <IconUsers />
                                                                 </button>
                                                             </span>

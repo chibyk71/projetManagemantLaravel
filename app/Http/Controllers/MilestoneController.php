@@ -25,6 +25,7 @@ class MilestoneController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the incoming request data
         $validated = $request->validate([
             'name' => 'required|string',
             'status' => 'required|in:IN_PROGRESS,YET_TO_COMMENCE,COMPLETED',
@@ -32,18 +33,23 @@ class MilestoneController extends Controller
             'contractor' => 'required|string',
             "projectId" => "required|integer"
         ]);
-    
-        $contractor_id = Contractor::where("name","=",$validated["contractor"])->pluck("id");
 
-        if (!$contractor_id) {
-            $contractor_id = Contractor::create(["name"=>$validated["contractor"]]);
+        // Find the contractor by name
+        $contractor = Contractor::firstWhere("name", "=", $validated["contractor"]);
+
+        // If the contractor doesn't exist, create a new one
+        if (!$contractor) {
+            $contractor = Contractor::create(["name" => $validated["contractor"]]);
         }
 
-        $validated["contractorId"] = $contractor_id;
+        // Get the contractor's ID
+        $validated["contractorId"] = $contractor->id;
 
+        // Create a new Milestone with the validated data
         Milestone::create($validated);
-        
-        return redirect()->back()->with('success', 'Validation passed!');
+
+        // Redirect back with a success message
+        // return redirect()->back()->with('success', 'Validation passed!');
     }
 
     /**
@@ -58,17 +64,17 @@ class MilestoneController extends Controller
             'contractor' => 'required|string',
             "projectId" => "required|integer"
         ]);
-    
-        $contractor_id = Contractor::where("name","=",$validated["contractor"])->pluck("id");
+
+        $contractor_id = Contractor::where("name", "=", $validated["contractor"])->pluck("id");
 
         if (!$contractor_id) {
-            $contractor_id = Contractor::create(["name"=>$validated["contractor"]]);
+            $contractor_id = Contractor::create(["name" => $validated["contractor"]]);
         }
 
         $validated["contractorId"] = $contractor_id;
 
         $milestone->update($validated);
-        
+
         return redirect()->back()->with('success', 'Validation passed!');
     }
 

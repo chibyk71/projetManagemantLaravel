@@ -11,8 +11,9 @@
     import { addSortBy } from 'svelte-headless-table/plugins';
     import ProjectLayout from './ProjectLayout.svelte';
       
-    export let ProjectMilestones;
-    const milestones = readable(ProjectMilestones.data);
+    export let datas;
+    console.log(datas);
+    const milestones = readable(datas.milestones);
     const table = createTable(milestones,{
         sort: addSortBy(),
     });
@@ -24,7 +25,7 @@
         }),
         table.column({
             header:"Contractor",
-            accessor: "contractor_id"
+            accessor: (item)=>item.contractor.name
         }),
         table.column({
             header:"Status",

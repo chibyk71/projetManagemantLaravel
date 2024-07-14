@@ -8,8 +8,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use RahulHaque\Filepond\Facades\Filepond;
 
 class ProfileController extends Controller
 {
@@ -25,6 +27,24 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+    }
+
+    public function avatar(Request $request) {
+        $request->validate(["avatar"=>  Rule::filepond([
+            'required',
+            'image',
+            'max:2000'
+        ])]);
+
+        // Set filename
+        $avatarName = time();
+    
+        // Move the file to permanent storage
+        // Automatic file extension set
+        $fileInfo = Filepond::field($request->avatar)
+            ->moveTo('avatars/' . $avatarName);
+
+        $request->user()->update(["avatar"=>$fileInfo["location"]]);
     }
 
     /**

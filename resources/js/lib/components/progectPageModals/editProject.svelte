@@ -1,6 +1,7 @@
 <script lang='ts'>
 	import { ModalClose } from './../../scripts/closeModal';
 	import ModalCloseBtn from './../modals/modalCloseBtn.svelte';
+    import RangeSlider from "svelte-range-slider-pips";
     import { FormGroup, Input, Modal, ModalBody } from "@sveltestrap/sveltestrap";
     import Spacers from '../spacers.svelte';
     import Editor from '@tinymce/tinymce-svelte';
@@ -9,15 +10,16 @@
     import { base } from '@/lib//scripts/userStore';
     import Svelecte from 'svelecte';
     import { fDate } from '@/lib//scripts/fdate';
-    import { useForm } from "@inertiajs/svelte";
+    import { useForm, page } from "@inertiajs/svelte";
     import { modal } from '@/lib/scripts/modalToggler';
     import { notify } from '@/lib/scripts/notify';
+    import { removeLeadingAsterisk } from '@/lib/scripts/removeLeadingAsterics';
         
     export let state: 'new'|'edit' = 'new'
     export let user;
     export let data: {
         title: string;
-        contractor: string;
+        contractor: any;
         start_date: string;
         due_date: string;
         desc: string;
@@ -25,32 +27,50 @@
         contract_sum: string;
         date_of_award: string;
         duration: string;
-        assigned?: number[];
-        number?: string | undefined;
-    };
+        team: {id:number,name:string,avatar:string}[];
+        project_number?: string | undefined;
+    } = $page.props.project;
     
     export let created_by = 'admin'
     
-    export let id = null;
+    function formatDate(dt) {
+        const date = new Date(dt);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is zero-based
+        const day = String(date.getDate()).padStart(2, '0');
+        
+        return `${year}-${month}-${day}`;
+    }
 
+    export let id = $page.props.project_id;
+    console.log(data);
+    
     const form = useForm({
-        start_date: data.start_date,
+        start_date: formatDate(data.start_date),
         title: data.title,
-        contractor: data.contractor,
-        due_date: data.due_date,
+        contractor: data.contractor.name,
+        due_date: formatDate(data.due_date),
         desc: data.desc,
-        progress: data.progress,
+        progress: null,
         contract_sum: data.contract_sum,
-        date_of_award: data.date_of_award,
+        date_of_award: formatDate(data.date_of_award),
         duration: data.duration,
-        assigned: data.assigned,
-        number: data.number,
+        assigned: data.team,
+        project_number: data.project_number,
         id
     })
 
+    let progress = [data.progress];
+    console.log(data.progress,progress);
+    
     const url = id? "project.update" : "project.store";
     const submit = ()=> {
-        $form.post(route(url,id?id:undefined),{
+        $form.contractor = removeLeadingAsterisk($form.contractor);
+        $form.assigned = $form.assigned.map(({name})=>{
+            return [name]
+        });
+        $form.progress = progress
+        $form.post(route(url,id),{
             onSuccess: ()=> {
                 modal.close()
                 notify({title: "Successful"})
@@ -62,7 +82,7 @@
     }   
 </script>
 <Modal keyboard={false} backdrop='static' size='lg' scrollable={false} isOpen={true}>
-    <form action={route(url)} method="post" on:submit={submit}>
+    <form action={route(url,id)} method="post" on:submit|preventDefault={submit}>
         <div class="modal-header" id="commonModalHeader">
             <h4 class="modal-title" id="commonModalTitle">Edit Project</h4>
             <ModalCloseBtn />
@@ -86,7 +106,7 @@
 
                     <FormGroup>
                         <label slot="label" for="" class="ext-left control-label col-form-label required">Project Number</label> 
-                        <Input bind:value={$form.number} name='number' type='text' invalid={!!$form.errors.number} feedback={$form.errors.number} />
+                        <Input bind:value={$form.project_number} name='project_number' type='text' invalid={!!$form.errors.project_number} feedback={$form.errors.project_number} />
                     </FormGroup>
 
                     <FormGroup>
@@ -115,13 +135,13 @@
                     {#if state === 'new'}
                         <FormGroup>
                             <label slot="label" for="" class="ext-left control-label col-form-label required">Assign Teams*</label>
-                            <Svelecte fetch={route("team.api")} name='assigned' required class='svelect-color' bind:value={$form.assigned} multiple placeholder='assign users to manage project'/>
+                            <Svelecte fetch={route("team.api")} labelField='name' valueField="id" name='assigned[]' required class='svelect-color' bind:value={$form.assigned} multiple valueAsObject placeholder='assign users to manage project'/>
                         </FormGroup>
                     {/if}
 
                     <FormGroup>
                         <label slot="label" for="" class="ext-left control-label col-form-label required">Contractor*</label>
-                        <Svelecte fetch={route("contractor.api")} valueField={'id'} labelField={"name"} class='svelect-color' name='contractor' bind:value={$form.contractor} placeholder='assign users to manage project'/>
+                        <Svelecte fetch={route("contractor.api")} keepCreated creatable valueField='name' labelField="name" class='svelect-color' name='contractor' bind:value={$form.contractor} placeholder='assign users to manage project'/>
                     </FormGroup>
                     <div class="line"></div>
 
@@ -139,10 +159,10 @@
                     <Spacers title='Progress'>
                         <div slot="content" class="form-group row">
                             <div class="col-sm-10 p-l-30">
-                                <Input class='w-100' name='progress' type='range' max={100} min={0} bind:value={$form.progress} invalid={!!$form.errors.progress} feedback={$form.errors.progress} />
+                                <RangeSlider class='w-100' name='progress' float max={100} min={0}  bind:values={progress} invalid={!!$form.errors.progress} feedback={$form.errors.progress} />
                             </div>
                             <div class="col-sm-2 text-right">
-                                <strong> <span id="edit_project_progress_display">{$form.progress||0}</span>%</strong>
+                                <strong> <span id="edit_project_progress_display">{progress}</span>%</strong>
                             </div>
                         </div>
                     </Spacers>

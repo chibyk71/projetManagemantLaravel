@@ -11,7 +11,7 @@ class FilesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can("create");
+        return true;
     }
 
     /**
@@ -22,20 +22,16 @@ class FilesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "stage" => ['required', function ($attribute, $value, $fail) {
-                $validStages = ['BEFORE', 'DURING', 'COMPLETE'];
-                if (!in_array($value, $validStages)) {
-                    return $fail('The ' . $attribute . ' must be one of the following values: BEFORE, DURING, COMPLETE.');
-                }
-            }],
+            "stage" => ['required',"in:BEFORE,DURING,COMPLETE"],
+            "names" => "required|array",
             "names.*"=> ["required","regex:/^[a-zA-Z0-9_.]+$/"],
-            "folder" => "required|alpha_dash"
+            "folder" => "required|regex:/([a-zA-Z0-9_.\s]+)$/"
         ];
     }
 
-    public function messages(): array {
-        return [
-            "name.regex" => "The :attribute must only contain letters, numbers, and underscores."
-        ];
-    }
+    // public function messages(): array {
+    //     return [
+    //         "names.*.regex" => "The :attribute must only contain letters, numbers, and underscores."
+    //     ];
+    // }
 }

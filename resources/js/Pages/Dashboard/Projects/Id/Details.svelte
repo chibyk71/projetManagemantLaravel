@@ -9,16 +9,15 @@
     export let details;
 
     let editing = false,
-        ProjectId = $page.params.id;
+        ProjectId = $page.props.project_id;
     export let isPermited = false
 
     const form = useForm({
-        desc: details.description,
-        id: ProjectId
+        desc: details,
     })
 
     async function handleSubmit() {
-        $form.post(route("project.details.update"),{
+        $form.post(route("project.update",ProjectId),{
             onSuccess: ()=>{
                 notify({title:"successful"})
                 editing = false
@@ -29,7 +28,7 @@
         })
     }
 </script>
-<ProjectLayout data={details}>
+<ProjectLayout>
     <div class="row m-t-10" id="projects-tab-single-screen">
         <!--dynamic ajax section-->
         <div class="col-lg-12">
@@ -40,10 +39,10 @@
                             <div class="row project-details" id="project-details-container">
                                 <div class="col-sm-12 tinymce-transparent">
                                     {#if !editing}
-                                        {@html details.description}
+                                        {@html details}
                                     {:else}
-                                        <form id="editor" on:submit|preventDefault={handleSubmit} action="{base}api/project_details.php" method="post">
-                                            <Editor conf={OptionTinyMce} bind:value={details.description} scriptSrc='{base}tinymce/tinymce.min.js' />
+                                        <form id="editor" on:submit|preventDefault={handleSubmit} action="{route("profile.update",ProjectId)}" method="post">
+                                            <Editor conf={OptionTinyMce} bind:value={details} scriptSrc='{base}tinymce/tinymce.min.js' />
                                             <!--dynamic description field-->
                                             <input type="hidden" name="id" value={ProjectId}>
                                         </form>

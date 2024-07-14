@@ -13,15 +13,17 @@ class Milestone extends Model
         "contractorId",
         "projectId",
         "progress",
-        "status"
+        "status",
+        "name"
     ];
 
-    public function projects() {
+    public function projects()
+    {
         return $this->belongsTo(Project::class);
     }
 
-    public function contractors() {
-        $this->belongsTo(Contractor::class);
+    public function contractors()
+    {
+        return $this->belongsTo(Contractor::class, "contractorId");
     }
-    
 }

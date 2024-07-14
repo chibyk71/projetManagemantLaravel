@@ -5,20 +5,19 @@
     import { modal } from "@/lib/scripts/modalToggler";
     import { FormGroup, Input, Modal } from "@sveltestrap/sveltestrap";
     import { notify } from "@/lib/scripts/notify";
-    export let state = "new";
-    export let id = null;
+    export let id = undefined;
     const link = id ? "contractor.store" : "contractor.edit";
     export let data
 
     const form = useForm({
-        name: null,
-        email: null,
-        url: null,
+        name: data.name,
+        email: data.email,
+        url: data.url,
         id,
     });
 
     const submit = () => {
-        $form.post(route(link), {
+        $form.post(route(link,id), {
             onSuccess: ()=>{
                 modal.close(),
                 notify({title:"Form Submitted"})
@@ -32,9 +31,8 @@
 
 <Modal isOpen keyboard={false} backdrop="static">
     <form action={route(link)} method="post" on:submit|preventDefault={submit}>
-        <input type="hidden" name="state" value={state} />
         <div class="modal-header" id="commonModalHeader">
-            <h4 class="modal-title" id="commonModalTitle">Add Contractor</h4>
+            <h4 class="modal-title" id="commonModalTitle">{id?"Edit":"Add"} Contractor</h4>
             <ModalCloseBtn />
         </div>
         <div class="modal-body min-h-200" id="commonModalBody">
@@ -67,7 +65,7 @@
                             slot="label"
                             for=""
                             class="col-12text-left control-label col-form-label required"
-                            >Company Email*</label
+                            >Company Email</label
                         >
                         <Input
                             bind:value={$form.email}
@@ -84,7 +82,7 @@
                             slot="label"
                             for=""
                             class="col-12text-left control-label col-form-label required"
-                            >Company Website*</label
+                            >Company Website</label
                         >
                         <Input
                             bind:value={$form.url}
@@ -116,7 +114,7 @@
                 class="btn btn-rounded-x btn-secondary text-left"
                 use:ModalClose>Close</button
             >
-            <button type="submit" class="btn btn-rounded-x btn-danger text-left"
+            <button type="submit" disabled={$form.processing} class="btn btn-rounded-x btn-danger text-left"
                 >Submit
                 {#if $form.processing}
                     <div

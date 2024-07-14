@@ -29,54 +29,13 @@
                         </div>
                         <div class="x-title">
                             <!--assigned event - viewed by third party-->
-                            <span
-                            >Signed a contract<span>
-                                <!--do for project time lines-->
-                                <!--task resources (comment|checklists|files)-->
-
-                                <!--task (actual)-->
-
-                                <!--lead (all event types)-->
-
-                                <!--project (invoices)-->
-
-                                <!--project (files)-->
-
-                                <!--project (estimates)-->
-
-                                <!--project (comments)-->
-
-                                <!--tickets-->
+                            <span>Signed a contract<span>
                             </span></span
                             >
                         </div>
-                        <!--attachment-->
-
-                        <!--comment-->
-
-                        <!--status-->
-
-                        <!--file-->
-
-                        <!--task-->
-
-                        <!--tickets-->
-
-                        <!--invoice-->
-
-                        <!--estimate-->
-
-                        <!--project (..but do not show on project timeline)-->
-
-                        <!--subscription-->
-
-                        <!--proposal-->
-
                         <!--contract-->
                         <div class="x-description">
-                            <a href="https://midnight.growcrm.io/contracts/109"
-                            >Web Development Contract</a
-                            >
+                            <a href="https://midnight.growcrm.io/contracts/109">Web Development Contract</a>
                         </div>
                         </div>
                     </div>
@@ -85,11 +44,7 @@
                 <!--each events item-->
                 <div class="sl-item timeline">
                     <div class="sl-left">
-                        <img
-                        src="https://midnight.growcrm.io/storage/avatars/system/default_avatar.jpg"
-                        alt="user"
-                        class="img-circle"
-                        />
+                        <img src="https://midnight.growcrm.io/storage/avatars/system/default_avatar.jpg" alt="user" class="img-circle"/>
                     </div>
                     <div class="sl-right">
                         <div>

@@ -1,5 +1,5 @@
 <script>
-  import { toggler } from "$lib/scripts/panelToggler";
+  import { toggler } from "@/lib/scripts/panelToggler";
   import { IconFilterBolt, IconX } from "@tabler/icons-svelte";
 
     const id = 'export-contractors'

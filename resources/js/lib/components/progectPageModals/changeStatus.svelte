@@ -1,11 +1,10 @@
-<script lang="ts">
+<script>
     import { Modal } from "@sveltestrap/sveltestrap";
     import { useForm } from "@inertiajs/svelte";
     import ModalCloseBtn from "../modals/modalCloseBtn.svelte";
     import { ModalClose } from "@/lib/scripts/closeModal";
     import Svelecte from "svelecte";
     import { modal } from "@/lib/scripts/modalToggler";
-    import { base } from "@/lib/scripts/userStore";
     import { notify } from "@/lib/scripts/notify";
 
     const ProjectStatus = ["IN_PROGRESS", "ON_HOLD", "COMPLETED", "NOT_STARTED", "CANCELED"]
@@ -13,17 +12,24 @@
         return {id:v,label:v.replace('_',' ')}
     })
 
-    export let id:number;
+    export let id;
+
+    export let projectIds;
+
+    if (id) {
+        projectIds.push(id)
+    }
     
     const form = useForm({
-        status: null
+        status: null,
+        projectIds
     })
     
     const handleSubmit = async ()=>{
-        $form.put(route("project.status.change",id),{
+        $form.put(route("project.status.change"),{
             onSuccess: ()=>{
                 modal.close()
-            notify({title:"Status Has Been Updated Successfully"})
+                notify({title:"Status Has Been Updated Successfully"})
             }
         })
     }

@@ -14,16 +14,35 @@ class ContractorController extends Controller
      */
     public function index()
     {
-        $contractors = Contractor::paginate(50);
-        return Inertia::render("Dashboard/Contractors/Page",compact("contractors"));
+        $contractors = Contractor::with(["projects","milestones"])->paginate(50);
+        $contractors->getCollection()->transform(function ($contractor) {
+            return [
+                "id" => $contractor->id,
+                "name" => $contractor->name,
+                "email" => $contractor->email,
+                "url" => $contractor->url,
+                "projects" => $contractor->projects->count()+$contractor->milestones->count(),
+            ];
+        });
+
+        $pagination = [
+            "total" => $contractors->total(),
+            "next_page_url" => $contractors->nextPageUrl(),
+        ];
+
+        return Inertia::render("Dashboard/Contractors/Page", [
+            "contractors" => $contractors,
+            "pagination" => $pagination,
+        ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(["name"=>"alpha_num|required|min:3","email"=>"email|sometimes","url"=>"sometimes|url"]);
+        $validated = $request->validate(["name" => "alpha_num|required|min:3", "email" => "email|sometimes", "url" => "sometimes|url"]);
 
         Contractor::create($validated);
     }
@@ -41,13 +60,14 @@ class ContractorController extends Controller
      */
     public function update(Request $request, Contractor $contractor)
     {
-        $validated = $request->validate(["name"=>"|sometimes|required|min:3","email"=>"sometimes|email","url"=>"sometimes|url"]);
+        $validated = $request->validate(["name" => "|sometimes|required|min:3", "email" => "sometimes|email", "url" => "sometimes|url"]);
 
         $contractor->update($validated);
     }
 
-    public function api() {
-        $contractors = Contractor::all(["id","name"]);
+    public function getContractors()
+    {
+        $contractors = Contractor::all(["id", "name"]);
         return Response::json($contractors);
     }
 

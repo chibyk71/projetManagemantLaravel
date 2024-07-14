@@ -11,7 +11,7 @@ class ProjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->hasPermissionTo("create projects");
     }
 
     /**
@@ -22,18 +22,18 @@ class ProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|min:6',
-            'contractor' => 'required|string|min:1',
-            'start_date' => 'required|string',
-            'due_date' => 'required|string',
-            'desc' => 'required|string',
-            'progress' => 'required|numeric|min:0|max:100',
+            'title' => 'sometimes|string|min:6',
+            'contractor' => 'sometimes|string|min:1',
+            'start_date' => 'sometimes|string',
+            'due_date' => 'sometimes|string',
+            'desc' => 'sometimes|string',
+            'progress' => 'sometimes|numeric|min:0|max:100',
             'assigned' => 'nullable|array',
-            'assigned.*' => 'number', // Ensuring each element in the assigned array is a string
-            'number' => 'nullable|string',
-            'contract_sum' => 'required|string',
-            'date_of_award' => 'required|string',
-            'duration' => 'required|string',
+            'assigned.*' => "numeric", // Ensuring each element in the assigned array is a string
+            'project_number' => 'nullable|string',
+            'contract_sum' => 'sometimes|string',
+            'date_of_award' => 'sometimes|string',
+            'duration' => 'sometimes|string',
         ];
     }
 }

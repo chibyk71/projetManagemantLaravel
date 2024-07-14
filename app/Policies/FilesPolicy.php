@@ -29,7 +29,7 @@ class FilesPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo("create files");
+        return $user->hasPermissionTo("create files")|| $user->hasRole("admin");
     }
 
     /**
