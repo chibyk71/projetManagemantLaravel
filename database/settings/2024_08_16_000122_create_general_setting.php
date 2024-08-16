@@ -6,6 +6,6 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->
+        $this->migrator->add("general.timezone", "Africa/Lagos");
     }
 };
