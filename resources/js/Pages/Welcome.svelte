@@ -3,7 +3,6 @@
 	import Navbar from '@/lib/components/guest/navbar.svelte';
 	import Team from '@/lib/components/guest/team.svelte';
 	import AltService from '@/lib/components/guest/altService.svelte';
-	import { base } from '@/lib/scripts/userStore';
 	import Construction from '@/lib/components/guest/construction.svelte';
     import GuestLayout from '@/layouts/guestLayout.svelte';
 
@@ -27,7 +26,7 @@
         </div>
     
         <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-            <div class="carousel-item active" style="background-image: url({base}storage/projects/home1.jpg)"></div>
+            <div class="carousel-item active" style="background-image: url(public/storage/project/home1.jpg)"></div>
         </div>
     
     </section><!-- End Hero Section -->

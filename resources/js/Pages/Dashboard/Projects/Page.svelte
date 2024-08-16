@@ -63,7 +63,7 @@
         }),
         table.column({
             header:"Contractor",
-            accessor: "contractor_name"
+            accessor: (row)=>row.contractor?.name
         }),
         table.column({
             header:"Start Date",
@@ -426,7 +426,7 @@
                                                                 <!--[edit]-->
                                                                 <button type="button" id='edit' on:click={()=>modal.open({comp:EditProject,prop:{id:row.original.id,data:
                                                                 {title:row.original.title,contractor:row.original.contractorId,start_date:row.original.start_date,
-                                                                due_date:row.original.due_date,desc:row.original.description,progress:row.original.progress,date_of_award:row.original.date_of_award,number:row.original.project_number,contract_sum:row.original.contract_sum},state:'edit'}})} class="btn btn-outline-success btn-circle btn-sm">
+                                                                due_date:row.original.due_date,description:row.original.description,progress:row.original.progress,date_of_award:row.original.date_of_award,number:row.original.project_number,contract_sum:row.original.contract_sum},state:'edit'}})} class="btn btn-outline-success btn-circle btn-sm">
                                                                     <IconNote class="sl-icon-note" />
                                                                     <Tooltip target='edit'>Edit</Tooltip>
                                                                 </button>

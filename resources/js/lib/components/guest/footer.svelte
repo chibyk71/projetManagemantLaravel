@@ -27,7 +27,7 @@
         <div class="footer-legal text-center relative">
             <div class="container">
                 <div class="copyright">
-                    &copy; Copyright <strong><span>UpConstruction</span></strong>. All Rights Reserved
+                    &copy; Copyright <strong><span>Zamfara State</span></strong>. All Rights Reserved
                 </div>
             </div>
         </div>

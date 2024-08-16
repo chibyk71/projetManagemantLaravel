@@ -15,7 +15,7 @@
 
             <div class="member" data-aos="fade-up" data-aos-delay="100">
                 <div class="member-img">
-                    <img src="storage/team/governor.jpg" class="img-fluid" alt="">
+                    <img src="public/storage/team/governor.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="member-info text-center">
                     <h4 class="uppercase"><small>His excellency</small> <b>dauda lawal</b></h4>
@@ -25,7 +25,7 @@
 
             <div class="member" data-aos="fade-up" data-aos-delay="200">
                 <div class="member-img">
-                    <img src="storage/team/dep_governor.jpg" class="img-fluid" alt="">
+                    <img src="public/storage/team/dep_governor.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="member-info text-center">               
                     <h4 class="uppercase"><small>His excellency </small> <b>mal. mani mummuni</b></h4>
@@ -35,7 +35,7 @@
 
             <div class="member" data-aos="fade-up" data-aos-delay="200">
                 <div class="member-img">
-                    <img src="storage/team/ssg.jpg" class="img-fluid" alt="">
+                    <img src="public/storage/team/ssg.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="member-info text-center">               
                     <h4 class="uppercase"><small>Mal </small> <b>abubakar nakwada</b></h4>
@@ -45,7 +45,7 @@
 
             <div class="member" data-aos="fade-up" data-aos-delay="200">
                 <div class="member-img">
-                    <img src="storage/team/commissioner.jpg" class="img-fluid" alt="">
+                    <img src="public/storage/team/commissioner.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="member-info text-center">               
                     <h4 class="uppercase"><small>Hon </small> <b>nasiru ibrahim</b></h4>

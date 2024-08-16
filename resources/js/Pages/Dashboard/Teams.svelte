@@ -125,7 +125,7 @@
                                                             <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
                                                             <td {...attrs}>
                                                                 {#if cell.column.id == 'name'}
-                                                                    <img src="storage/{row.original.avatar}" alt="{cell.value}" class="img-circle avatar-xsmall">
+                                                                    <img src="public/storage/{row.original.avatar}" alt="{cell.value}" class="img-circle avatar-xsmall">
                                                                     <Render of={cell.render()} />
                                                                 {:else}
                                                                     <Render of={cell.render()} />

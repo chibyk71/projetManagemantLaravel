@@ -8,7 +8,6 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -20,7 +19,7 @@ class ProjectController extends Controller
     {
 
         // Fetch the projects with assigned users
-        $projects = Project::paginate(50);
+        $projects = Project::with(["milestones","assignedUsers","folders"])->paginate(50);
 
         // Transform the projects to the desired format
         $transformedProjects = $projects->getCollection()->transform(function ($project) {
@@ -34,13 +33,14 @@ class ProjectController extends Controller
                 'completed_date' => $project->completed_date ? (string) $project->completed_date : null,
                 'status' => (string) $project->status,
                 'progress' => (string) $project->progress,
-                'desc' => (string) $project->desc,
+                'description' => (string) $project->description,
                 'created_by_id' => (string) $project->created_by_id,
                 'contract_sum' => (string) $project->contract_sum,
                 'date_of_award' => (string) $project->date_of_award,
                 'duration' => $project->duration ? (string) $project->duration : null,
                 'project_number' => (string) $project->project_number, // Assuming you have a relationship with Contractor
-                'milestones' => (string) $project->milestones,
+                'milestones' => $project->milestones->count(),
+                "files" => $project->folders->files->count(),
                 'team' => $project->assignedUsers->map(function ($user) {
                     return [
                         'id' => (string) $user->id,
@@ -84,6 +84,7 @@ class ProjectController extends Controller
         }
 
         $projectData["contractor_id"] = $contractor_id;
+        unset($projectData["contractor"]);
 
         Project::create($projectData);
     }
@@ -98,19 +99,19 @@ class ProjectController extends Controller
             'id' => $project->id,
             'title' => (string) $project->title,
             'contractor' => $project->contractors->only(["id", "name"]),
-            'start_date' => (string) $project->start_date,
-            'due_date' => (string) $project->due_date,
+            'start_date' => $project->start_date,
+            'due_date' => $project->due_date,
             'canceled_date' => $project->canceled_date ? (string) $project->canceled_date : null,
             'completed_date' => $project->completed_date ? (string) $project->completed_date : null,
             'status' => (string) $project->status,
-            'progress' => (string) $project->progress,
-            'desc' => (string) $project->desc,
+            'progress' => $project->progress,
+            'description' => (string) $project->description,
             'created_by_id' => (string) $project->created_by_id,
             'contract_sum' => (string) $project->contract_sum,
             'date_of_award' => (string) $project->date_of_award,
             'duration' => $project->duration ? (string) $project->duration : null,
             'project_number' => (string) $project->project_number, // Assuming you have a relationship with Contractor
-            'milestones' => (string) $project->milestones,
+            'milestones' => $project->milestones,
             'team' => $project->assignedUsers->map(function ($user) {
                 return [
                     'id' => (string) $user->id,

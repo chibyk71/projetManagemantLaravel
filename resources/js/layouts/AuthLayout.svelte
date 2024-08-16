@@ -9,17 +9,17 @@
         <!--signup-->
         <div class="login-logo m-t-30 p-b-5">
             <a href={void(0)} class="text-center db">
-                <img src="{base}storage/logos/app/logo.png" alt="Home">
+                <img src="public/storage/logos/app/logo.png" alt="Home">
             </a>
         </div>
 
         <slot />
         <div class="login-background">
             <div class="x-left">
-                <img alt="" src="{base}images/login-1.png" class="login-images" />
+                <img alt="" src="public/storageimages/login-1.png" class="login-images" />
             </div>
             <div class="x-right hidden">
-                <img src="{base}images/login-2.png" alt="404 - Not found" />
+                <img src="public/storage/images/login-2.png" alt="404 - Not found" />
             </div>
         </div>
         <!--signup-->

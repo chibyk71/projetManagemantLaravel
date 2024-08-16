@@ -9,9 +9,11 @@ use App\Http\Controllers\MilestoneController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectInfoController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TeamController;
 use App\Models\Project;
-use Illuminate\Foundation\Application;
+use App\Settings\GeneralSetting;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -62,6 +64,20 @@ Route::middleware('auth')->group(function () {
     Route::post("/milestone/{milestone}/update", [MilestoneController::class, "update"])->name("milestone.update");
     Route::post("/milestone/store", [MilestoneController::class, "store"])->name("milestone.store");
     Route::delete('/milestone/{milestone}', [MilestoneController::class, "destroy"])->name("milestone.delete");
+
+    Route::get("/setting", function() {return Inertia::render("Dashboard/Settings/Page");})->name("setting.index");
+
+    Route::get("setting/general", [SettingController::class, "generalShow"])->name("setting.general.show");
+    Route::post("setting/general", [SettingController::class, "generalStore"])->name("setting.general.store");
+    
+    Route::get("setting/website", [SettingController::class, "websiteShow"])->name("setting.website.show");
+    Route::post("setting/website", [SettingController::class, "websiteStore"])->name("setting.website.store");
+
+
+    Route::get("/setting/roles",[RoleController::class,"index"])->name("role.index");
+    Route::post("/create/roles", [RoleController::class, "store"])->name("role.store");
+    Route::delete("/role/{role}", [RoleController::class, "destroy"])->name("role.delete");
+    Route::get("role/permission/{role}", [RoleController::class, "permissions"])->name("role.permission.show");
 });
 
 Route::middleware("guest")->group(function () {

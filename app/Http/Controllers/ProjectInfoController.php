@@ -33,7 +33,7 @@ class ProjectInfoController extends Controller
     }
 
     public function details(Project $project) {
-        $details = $project->pluck("desc");
+        $details = $project->pluck("description");
         $user = request()->user();
 
         $isPermited = $user->hasPermissionTo("edit projects") || $user->id === $project->createdBy;

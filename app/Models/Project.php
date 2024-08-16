@@ -42,7 +42,7 @@ class Project extends Model
         "completed_date",
         "status",
         "progress",
-        "desc",
+        "description",
         "createdBy",
         "duration"
     ];

@@ -37,7 +37,7 @@
         <div class="modal-body min-h-200">
             <div class="splash-image" id="updatePasswordSplash">
                 <img
-                    src="{base}public/images/authentication-update-password.png"
+                    src="public/storage/images/authentication-update-password.png"
                     alt="404 - Not found"
                 />
             </div>

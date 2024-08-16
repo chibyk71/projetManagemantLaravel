@@ -8,7 +8,7 @@
 
     export let projects: {
 		Files: string;
-		milestones: string;
+		milestones: {}[];
 		status: 'IN_PROGRESS'|'ON_HOLD'|'COMPLETED'|'NOT_STARTED'|'CANCELED';
 		date_of_award: string | number | Date;
 		due_date: string | number | Date;
@@ -67,7 +67,7 @@
         <main id="main">
         
             <!-- ======= Breadcrumbs ======= -->
-            <div class="breadcrumbs flex items-center" style="background-image: url('{base}storage/projects/home.jpg');">
+            <div class="breadcrumbs flex items-center" style="background-image: url('public/storage/project/home.jpg');">
                 <div class="container relative flex flex-col items-center" data-aos="fade">
         
                     <h2>Project Details</h2>
@@ -87,7 +87,7 @@
                             <div class="portfolio-description">
                                 <h2>{projects.title}</h2>
                                 
-                                <div class="">{@html projects.desc}</div>
+                                <div class="">{@html projects.description}</div>
         
                             </div>
                             <Projects data={stages} />

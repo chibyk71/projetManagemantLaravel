@@ -26,7 +26,7 @@ class ProjectRequest extends FormRequest
             'contractor' => 'sometimes|string|min:1',
             'start_date' => 'sometimes|string',
             'due_date' => 'sometimes|string',
-            'desc' => 'sometimes|string',
+            'description' => 'sometimes|string',
             'progress' => 'sometimes|numeric|min:0|max:100',
             'assigned' => 'nullable|array',
             'assigned.*' => "numeric", // Ensuring each element in the assigned array is a string

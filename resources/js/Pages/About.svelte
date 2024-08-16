@@ -36,17 +36,17 @@
     
                 <div class="flex flex-wrap relative">
     
-                    <div class="lg:w-7/12 w-full about-img" style="background-image: url({base}storage/projects//about.jpg);"></div>
+                    <div class="lg:w-7/12 w-full about-img" style="background-image: url(public/storage/project/about.jpg);"></div>
     
                     <div class="lg:w-7/12 w-full">
                         <div class="our-story sm:p-4 lg:p-10">
                             <h3>Our Mission</h3>
                             <p>Our mission is to provide citizens with easy access to information about government contracts and projects.</p>
                             <p>We aim to promote transparency and empower citizens by sharing project details in a user-friendly manner.</p>
-                            <ul>
-                                <li><IconSquareCheckFilled />Transparency: <span>Citizens can access real-time information on government projects, fostering trust and accountability.</span></li>
-                                <li><IconSquareCheckFilled /> Informed Decision-Making: <span>By understanding project details, citizens can participate in discussions and provide feedback.</span></li>
-                                <li><IconSquareCheckFilled /> Empowerment:  <span>Accessible data allows citizens to monitor progress, identify issues, and engage with policymakers.</span></li>
+                            <ul class="lg:-mr-4">
+                                <li><IconSquareCheckFilled /> <span class="text-lg font-bold">Transparency</span>: <span>Citizens can access real-time information on government projects, fostering trust and accountability.</span></li>
+                                <li><IconSquareCheckFilled /> <span class="text-lg font-bold">Informed Decision-Making:</span> <span>By understanding project details, citizens can participate in discussions and provide feedback.</span></li>
+                                <li><IconSquareCheckFilled /> <span class="text-lg font-bold">Empowerment:</span>  <span>Accessible data allows citizens to monitor progress, identify issues, and engage with policymakers.</span></li>
                             </ul>
                         </div>
                     </div>

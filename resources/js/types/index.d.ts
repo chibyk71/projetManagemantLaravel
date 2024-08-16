@@ -53,13 +53,14 @@ export interface Project {
     completed_date: string | null;
     status: string;
     progress: string;
-    desc: string;
+    description: string;
     created_by_id: string;
     contract_sum: string;
     date_of_award: string;
     duration: string | null;
     project_number: string;
-    milestones: string;
+    milestones: number;
+    files:number;
     team: {
         id: string;
         name: string;

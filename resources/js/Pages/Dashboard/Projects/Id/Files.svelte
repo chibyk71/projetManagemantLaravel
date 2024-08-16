@@ -295,7 +295,7 @@
                                                                             {#if cell.column.id == "name"}
                                                                             <div class="preview-image-thumb">
                                                                                 <Lightbox>
-                                                                                    <img class="lists-table-thumb" alt="" src="storage/{cell.value}">
+                                                                                    <img class="lists-table-thumb" alt="" src="public/storage/{cell.value}">
                                                                                 </Lightbox>
                                                                             </div>                                                                        
                                                                                 <a target="_blank" href="storage/{cell.value}">
@@ -304,7 +304,7 @@
                                                                             {:else if cell.column.id.includes('date')}
                                                                                 {fDate(cell.value)}
                                                                             {:else if cell.column.id == "user"}
-                                                                                <img src="storage/{row.original.uploadedBy.avatar}" alt="user" class="img-circle avatar-xsmall"> {cell.value}
+                                                                                <img src="public/storage/{row.original.uploadedBy.avatar}" alt="user" class="img-circle avatar-xsmall"> {cell.value}
                                                                             {:else}
                                                                                 <Render of={cell.render()} />
                                                                             {/if}

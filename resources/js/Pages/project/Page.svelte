@@ -1,6 +1,5 @@
-<script lang="ts">
+<script>
 	import Navbar from '@/lib/components/guest/navbar.svelte';
-	import { base } from '@/lib/scripts/userStore';
 	import Construction from '@/lib/components/guest/construction.svelte';
 	import Footer from '@/lib/components/guest/footer.svelte';
     import GuestLayout from '@/layouts/guestLayout.svelte';
@@ -15,7 +14,7 @@
 		<!-- ======= Breadcrumbs ======= -->
 		<div
 			class="breadcrumbs flex items-center"
-			style="background-image: url('{base}storage/projects/home.jpg');"
+			style="background-image: url('public/storage/project/home.jpg');"
 		>
 			<div class="container relative flex flex-col items-center" data-aos="fade">
 				<h2>Projects</h2>

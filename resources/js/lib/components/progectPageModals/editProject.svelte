@@ -6,8 +6,6 @@
     import Spacers from '../spacers.svelte';
     import Editor from '@tinymce/tinymce-svelte';
     import { OptionTinyMce } from '@/lib//scripts/tinymceProps';
-    import { onMount } from 'svelte';
-    import { base } from '@/lib//scripts/userStore';
     import Svelecte from 'svelecte';
     import { fDate } from '@/lib//scripts/fdate';
     import { useForm, page } from "@inertiajs/svelte";
@@ -22,7 +20,7 @@
         contractor: any;
         start_date: string;
         due_date: string;
-        desc: string;
+        description: string;
         progress: number;
         contract_sum: string;
         date_of_award: string;
@@ -43,14 +41,13 @@
     }
 
     export let id = $page.props.project_id;
-    console.log(data);
     
     const form = useForm({
         start_date: formatDate(data.start_date),
         title: data.title,
         contractor: data.contractor.name,
         due_date: formatDate(data.due_date),
-        desc: data.desc,
+        description: data.description,
         progress: null,
         contract_sum: data.contract_sum,
         date_of_award: formatDate(data.date_of_award),
@@ -149,8 +146,8 @@
                     <!--DESCRIPTION & DETAILS-->
                     <Spacers title='Description &amp; Details'>
                         <svelte:fragment slot="content">
-                            <Editor conf={OptionTinyMce} bind:value={$form.desc} scriptSrc='{base}/tinymce/tinymce.min.js' />
-                            <Input value="description" name='desc' type='text' class='d-none' invalid={!!$form.errors.desc} feedback={$form.errors.desc}/>
+                            <Editor conf={OptionTinyMce} bind:value={$form.description} scriptSrc='public/storage/tinymce/tinymce.min.js' />
+                            <Input value="description" name='description' type='text' class='d-none' invalid={!!$form.errors.description} feedback={$form.errors.description}/>
                         </svelte:fragment>
                     </Spacers>
                     <!--/#DESCRIPTION & DETAILS-->

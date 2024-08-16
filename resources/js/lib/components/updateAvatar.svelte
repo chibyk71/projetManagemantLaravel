@@ -12,7 +12,6 @@
     // Import the Image EXIF Orientation and Image Preview plugins
     import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
     import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-    import { base } from "@/lib/scripts/userStore";
     import axios from "axios";
     import { useForm } from "@inertiajs/svelte";
 
@@ -57,7 +56,7 @@
         </span>
         <div class="modal-body min-h-200" id="commonModalBody">
             <div class="splash-image" id="updatePasswordSplash">
-                <img src="{base}/images/update-avatar.png" alt="update avatar">
+                <img src="public/storage/images/update-avatar.png" alt="update avatar">
             </div>
             <div class="splash-text">
                 Update your profile picture

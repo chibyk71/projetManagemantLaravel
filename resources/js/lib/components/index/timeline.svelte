@@ -59,48 +59,9 @@
                             <!--assigned event - viewed by third party-->
                             <span
                             >Signed a contract<span>
-                                <!--do for project time lines-->
-                                <!--task resources (comment|checklists|files)-->
-
-                                <!--task (actual)-->
-
-                                <!--lead (all event types)-->
-
-                                <!--project (invoices)-->
-
-                                <!--project (files)-->
-
-                                <!--project (estimates)-->
-
-                                <!--project (comments)-->
-
-                                <!--tickets-->
                             </span></span
                             >
                         </div>
-                        <!--attachment-->
-
-                        <!--comment-->
-
-                        <!--status-->
-
-                        <!--file-->
-
-                        <!--task-->
-
-                        <!--tickets-->
-
-                        <!--invoice-->
-
-                        <!--estimate-->
-
-                        <!--project (..but do not show on project timeline)-->
-
-                        <!--subscription-->
-
-                        <!--proposal-->
-
-                        <!--contract-->
                         <div class="x-description">
                             <a href="https://midnight.growcrm.io/contracts/110"
                             >Logo Design</a
@@ -109,8 +70,6 @@
                         </div>
                     </div>
                 </div>
-                <!--each events item-->
-                <!--each events item-->
                 <div class="sl-item timeline">
                 <div class="sl-left">
                     <img
@@ -132,48 +91,9 @@
                         <!--assigned event - viewed by third party-->
                         <span
                         >Signed a contract<span>
-                            <!--do for project time lines-->
-                            <!--task resources (comment|checklists|files)-->
-
-                            <!--task (actual)-->
-
-                            <!--lead (all event types)-->
-
-                            <!--project (invoices)-->
-
-                            <!--project (files)-->
-
-                            <!--project (estimates)-->
-
-                            <!--project (comments)-->
-
-                            <!--tickets-->
                         </span></span
                         >
                     </div>
-                    <!--attachment-->
-
-                    <!--comment-->
-
-                    <!--status-->
-
-                    <!--file-->
-
-                    <!--task-->
-
-                    <!--tickets-->
-
-                    <!--invoice-->
-
-                    <!--estimate-->
-
-                    <!--project (..but do not show on project timeline)-->
-
-                    <!--subscription-->
-
-                    <!--proposal-->
-
-                    <!--contract-->
                     <div class="x-description">
                         <a href="https://midnight.growcrm.io/contracts/112"
                         >WordPress Theme Design</a
@@ -182,8 +102,6 @@
                     </div>
                 </div>
                 </div>
-                <!--each events item-->
-                <!--each events item-->
                 <div class="sl-item timeline">
                 <div class="sl-left">
                     <img
@@ -202,48 +120,9 @@
                         <!--assigned event - viewed by third party-->
                         <span
                         >Created a new contract<span>
-                            <!--do for project time lines-->
-                            <!--task resources (comment|checklists|files)-->
-
-                            <!--task (actual)-->
-
-                            <!--lead (all event types)-->
-
-                            <!--project (invoices)-->
-
-                            <!--project (files)-->
-
-                            <!--project (estimates)-->
-
-                            <!--project (comments)-->
-
-                            <!--tickets-->
                         </span></span
                         >
                     </div>
-                    <!--attachment-->
-
-                    <!--comment-->
-
-                    <!--status-->
-
-                    <!--file-->
-
-                    <!--task-->
-
-                    <!--tickets-->
-
-                    <!--invoice-->
-
-                    <!--estimate-->
-
-                    <!--project (..but do not show on project timeline)-->
-
-                    <!--subscription-->
-
-                    <!--proposal-->
-
-                    <!--contract-->
                     <div class="x-description">
                         <a href="https://midnight.growcrm.io/contracts/112"
                         >Contract - CO-00112</a
@@ -252,8 +131,6 @@
                     </div>
                 </div>
                 </div>
-                <!--each events item-->
-                <!--each events item-->
                 <div class="sl-item timeline">
                 <div class="sl-left">
                     <img
@@ -272,22 +149,6 @@
                         <!--assigned event - viewed by third party-->
                         <span
                         >Created a new contract<span>
-                            <!--do for project time lines-->
-                            <!--task resources (comment|checklists|files)-->
-
-                            <!--task (actual)-->
-
-                            <!--lead (all event types)-->
-
-                            <!--project (invoices)-->
-
-                            <!--project (files)-->
-
-                            <!--project (estimates)-->
-
-                            <!--project (comments)-->
-
-                            <!--tickets-->
                         </span></span
                         >
                     </div>

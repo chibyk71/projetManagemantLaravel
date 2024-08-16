@@ -3,13 +3,11 @@
     import { ModalClose } from "@/lib//scripts/closeModal";
     import { useForm } from "@inertiajs/svelte";
     import { FormGroup, Input, Modal } from "@sveltestrap/sveltestrap";
-    import Svelecte from "svelecte";
     import { modal } from "@/lib//scripts/modalToggler";
     import { notify } from "@/lib//scripts/notify";
     
 
     export let data;
-
     const form = useForm({
         name: data.name,
         email: data.email,

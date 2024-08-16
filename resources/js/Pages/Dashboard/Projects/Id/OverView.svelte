@@ -127,7 +127,7 @@
                                     {#each project.notifications as {id,affected_user_id,message,date_created,created_by}}
                                         <div class="sl-item timeline">
                                             <div class="sl-left">
-                                                <img src="{base+'uploaded/avatar/'+created_by.avatar}" alt={created_by.name} class="img-circle">
+                                                <img src="public/storage/avatar/'+created_by.avatar}" alt={created_by.name} class="img-circle">
                                             </div>
                                             <div class="sl-right">
                                                 <div>

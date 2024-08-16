@@ -183,6 +183,10 @@ Global Styles
   .no-wrap th {
     white-space: nowrap;
   }
+
+  .settings .sidebar-nav ul li ul {
+      padding-left: 25px;
+  }
   
   /*******************
     Blockquote

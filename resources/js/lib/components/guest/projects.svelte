@@ -34,7 +34,7 @@
                                     {#if file.name}
                                         <div class="portfolio-item">
                                             <div class="portfolio-content h-56">
-                                                <img src="storage/{file.name}" class="img-fluid object-cover h-full" alt="">
+                                                <img src="public/storage/{file.name}" class="img-fluid object-cover h-full" alt="">
                                                 <div class="portfolio-info">
                                                     <a href="storage/{file.name}" data-gallery={item} class="glightbox preview-link"><IconZoomIn /></a>
                                                 </div>

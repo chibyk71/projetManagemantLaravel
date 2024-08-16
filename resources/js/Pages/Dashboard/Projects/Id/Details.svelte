@@ -13,7 +13,7 @@
     export let isPermited = false
 
     const form = useForm({
-        desc: details,
+        description: details,
     })
 
     async function handleSubmit() {
@@ -42,7 +42,7 @@
                                         {@html details}
                                     {:else}
                                         <form id="editor" on:submit|preventDefault={handleSubmit} action="{route("profile.update",ProjectId)}" method="post">
-                                            <Editor conf={OptionTinyMce} bind:value={details} scriptSrc='{base}tinymce/tinymce.min.js' />
+                                            <Editor conf={OptionTinyMce} bind:value={details} scriptSrc='public/storage/tinymce/tinymce.min.js' />
                                             <!--dynamic description field-->
                                             <input type="hidden" name="id" value={ProjectId}>
                                         </form>

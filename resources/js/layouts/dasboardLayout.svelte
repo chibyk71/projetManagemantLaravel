@@ -35,6 +35,9 @@
                 nxAutoHideSideMenu();
             }
         };
+        if ($page.url.startsWith('/setting')) {
+            document.body.classList.add("loggedin","fix-header","card-no-border","fix-sidebar","settings","settings-home");
+        }
     })
     
     export let user = $page.props.user
@@ -56,8 +59,8 @@
                     <!--logo-->
                     <div class="sidenav-menu-item logo m-t-0">
                         <a class="navbar-brand" href="/">
-                            <img src="{base}storage/logos/app/logo-small.png" alt="homepage" class="logo-small"/>
-                            <img src="{base}storage/logos/app/logo.png" alt="homepage" class="logo-large"/>
+                            <img src="public/storage/logos/app/logo-small.png" alt="homepage" class="logo-small"/>
+                            <img src="public/storage/logos/app/logo.png" alt="homepage" class="logo-large"/>
                         </a>
                     </div>
                 </div>
@@ -182,7 +185,7 @@
                         <!-- profile -->
                         <Dropdown nav class='nav-item u-pro'>
                             <DropdownToggle nav class="nav-link p-l-20 p-r-20 waves-dark profile-pic">
-                                <img src="/storage/{user?.avatar|| 'avatar.jpg'}" id="topnav_avatar" alt="user" class=""/>
+                                <img src="public/storage/{user?.avatar|| 'avatar.jpg'}" id="topnav_avatar" alt="user" class=""/>
                                 <span class="hidden-md-down" id="topnav_username">{user?.name.split(' ')[0]|| 'Visitor'}</span>                       
                             </DropdownToggle>
                             <DropdownMenu class='animate__flipInY animate__animated dropdown-menu-right'>
@@ -193,7 +196,7 @@
                                         <li>
                                             <div class="dw-user-box d-flex align-items-start">
                                                 <div class="u-img">
-                                                    <img src="/storage/{user?.avatar}" alt="user"/>
+                                                    <img src="public/storage/{user?.avatar}" alt="user"/>
                                                 </div>
                                                 <div class="u-text flex-fill">
                                                     <h4 class="text-capitalize">{user?.name}</h4>
