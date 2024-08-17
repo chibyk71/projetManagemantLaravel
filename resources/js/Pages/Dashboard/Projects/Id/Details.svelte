@@ -1,5 +1,5 @@
 <script>
-    import { base } from '@/lib/scripts/userStore';
+    import { asset, base } from '@/lib/scripts/userStore';
     import Editor from '@tinymce/tinymce-svelte';
     import { OptionTinyMce } from '@/lib/scripts/tinymceProps';
     import { page, useForm } from '@inertiajs/svelte';
@@ -42,7 +42,7 @@
                                         {@html details}
                                     {:else}
                                         <form id="editor" on:submit|preventDefault={handleSubmit} action="{route("profile.update",ProjectId)}" method="post">
-                                            <Editor conf={OptionTinyMce} bind:value={details} scriptSrc='public/storage/tinymce/tinymce.min.js' />
+                                            <Editor conf={OptionTinyMce} bind:value={details} scriptSrc='{asset}tinymce/tinymce.min.js' />
                                             <!--dynamic description field-->
                                             <input type="hidden" name="id" value={ProjectId}>
                                         </form>

@@ -14,6 +14,7 @@
     import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
     import axios from "axios";
     import { useForm } from "@inertiajs/svelte";
+    import { asset } from "../scripts/userStore";
 
     // Register the plugins
     registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -56,7 +57,7 @@
         </span>
         <div class="modal-body min-h-200" id="commonModalBody">
             <div class="splash-image" id="updatePasswordSplash">
-                <img src="public/storage/images/update-avatar.png" alt="update avatar">
+                <img src="{asset}images/update-avatar.png" alt="update avatar">
             </div>
             <div class="splash-text">
                 Update your profile picture

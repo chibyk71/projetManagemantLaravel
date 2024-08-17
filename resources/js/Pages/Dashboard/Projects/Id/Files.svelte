@@ -4,7 +4,7 @@
     import { useForm, page } from "@inertiajs/svelte";
     import { IconChevronDown, IconChevronUp, IconDots, IconDownload, IconFolder, IconTrash, IconCirclePlus, IconEdit } from '@tabler/icons-svelte';
     import { Lightbox } from 'svelte-lightbox';
-    import { base, folders } from '@/lib/scripts/userStore';
+    import { asset, base, folders } from '@/lib/scripts/userStore';
     import { fDate } from '@/lib/scripts/fdate';
     import NothingFound from '@/lib/components/nothingFound.svelte';
     import { Delete } from '@/lib/scripts/deleteFromDb';
@@ -295,7 +295,7 @@
                                                                             {#if cell.column.id == "name"}
                                                                             <div class="preview-image-thumb">
                                                                                 <Lightbox>
-                                                                                    <img class="lists-table-thumb" alt="" src="public/storage/{cell.value}">
+                                                                                    <img class="lists-table-thumb" alt="" src="{asset}{cell.value}">
                                                                                 </Lightbox>
                                                                             </div>                                                                        
                                                                                 <a target="_blank" href="storage/{cell.value}">
@@ -304,7 +304,7 @@
                                                                             {:else if cell.column.id.includes('date')}
                                                                                 {fDate(cell.value)}
                                                                             {:else if cell.column.id == "user"}
-                                                                                <img src="public/storage/{row.original.uploadedBy.avatar}" alt="user" class="img-circle avatar-xsmall"> {cell.value}
+                                                                                <img src="{asset}{row.original.uploadedBy.avatar}" alt="user" class="img-circle avatar-xsmall"> {cell.value}
                                                                             {:else}
                                                                                 <Render of={cell.render()} />
                                                                             {/if}

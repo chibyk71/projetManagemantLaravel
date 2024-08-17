@@ -1,6 +1,6 @@
 <script lang="ts">
     import { IconTrash } from '@tabler/icons-svelte';
-  import { base } from '@/lib/scripts/userStore';
+  import { asset, base } from '@/lib/scripts/userStore';
     import ProjectLayout from './ProjectLayout.svelte';
     
     export let data;
@@ -20,7 +20,7 @@
                                     <!--complete commenting form-->
                                     <div class="post-comment display-flex flex-row" id="form-Zaj9XSjw3R">
                                         <div class="x-avatar">
-                                            <img src="public/storage/avatars/u605LHNjrJleptBe6fn47Cb3jHG24GVYiZYAdeG8/avatar.jpg"
+                                            <img src="{asset}avatars/u605LHNjrJleptBe6fn47Cb3jHG24GVYiZYAdeG8/avatar.jpg"
                                                 class="img-circle" alt="user" width="40">
                                         </div>
                                         <!--placeholder textbox-->
@@ -38,7 +38,7 @@
                                     <div class="comment-widgets" id="comments-container">
                                         <div class="display-flex flex-row comment-row" id="comment_272">
                                             <div class="p-2">
-                                                <img src="public/storage/avatars/u605LHNjrJleptBe6fn47Cb3jHG24GVYiZYAdeG8/avatar.jpg" class="img-circle" alt="user" width="40">
+                                                <img src="{asset}avatars/u605LHNjrJleptBe6fn47Cb3jHG24GVYiZYAdeG8/avatar.jpg" class="img-circle" alt="user" width="40">
                                             </div>
                                             <div class="comment-text w-100 js-hover-actions">
                                                 <div class="row">
@@ -55,7 +55,7 @@
                                                     </div>
                                                 </div>
                                                 <div>You can also review this second layout.<br><br><br><img
-                                                        src="public/storage/files/7W2x7B6ANWzjF4NqU6UUYL1WPFR0cvI8sewm0XXx/img.jpg"
+                                                        src="{asset}files/7W2x7B6ANWzjF4NqU6UUYL1WPFR0cvI8sewm0XXx/img.jpg"
                                                         alt="" width="583" height="387"></div>
                                             </div>
                                         </div>
@@ -63,7 +63,7 @@
                                         <!-- each comment -->
                                         <div class="display-flex flex-row comment-row" id="comment_271">
                                             <div class="p-2">
-                                                <img src="public/storage/avatars/u605LHNjrJleptBe6fn47Cb3jHG24GVYiZYAdeG8/avatar.jpg"
+                                                <img src="{asset}avatars/u605LHNjrJleptBe6fn47Cb3jHG24GVYiZYAdeG8/avatar.jpg"
                                                     class="img-circle" alt="user" width="40">
                                             </div>
                                             <div class="comment-text w-100 js-hover-actions">
@@ -83,7 +83,7 @@
                                                 <div>
                                                     <p>Please review this new design and let me know if any changes are
                                                         required.</p>
-                                                    <p><img src="public/storage/files/Ytfxp64Ce2NL8T2IKNaoBNCEnAi8n01cUInUCNct/img.jpg"
+                                                    <p><img src="{asset}files/Ytfxp64Ce2NL8T2IKNaoBNCEnAi8n01cUInUCNct/img.jpg"
                                                             alt="" width="497" height="371"></p>
                                                 </div>
                                             </div>

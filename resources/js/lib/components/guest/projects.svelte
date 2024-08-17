@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from "@/lib/scripts/userStore";
+	import { asset, base } from "@/lib/scripts/userStore";
 	import { IconZoomIn } from "@tabler/icons-svelte";
 	import { onMount } from "svelte";
     import 'glightbox/dist/css/glightbox.css';
@@ -34,7 +34,7 @@
                                     {#if file.name}
                                         <div class="portfolio-item">
                                             <div class="portfolio-content h-56">
-                                                <img src="public/storage/{file.name}" class="img-fluid object-cover h-full" alt="">
+                                                <img src="{asset+file.name}" class="img-fluid object-cover h-full" alt="">
                                                 <div class="portfolio-info">
                                                     <a href="storage/{file.name}" data-gallery={item} class="glightbox preview-link"><IconZoomIn /></a>
                                                 </div>

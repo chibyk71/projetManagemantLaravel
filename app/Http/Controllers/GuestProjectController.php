@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Settings\WebsiteSetting;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +46,7 @@ class GuestProjectController extends Controller
         return Inertia::render('project/Page', ['projects' => $projects]);
     }
 
-    public function home()
+    public function home(WebsiteSetting $websiteSetting)
     {
         $projects = Project::with('folders.files')->paginate(12);
 
@@ -76,7 +77,10 @@ class GuestProjectController extends Controller
             'canRegister' => Route::has('register'),
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
-            "projects" => $projects
+            "projects" => $projects,
+            "title" => $websiteSetting->front_page_heading,
+            "front_img"=> $websiteSetting->front_img,
+            "subheading"=> $websiteSetting->front_page_subheading
         ]);
     }
 

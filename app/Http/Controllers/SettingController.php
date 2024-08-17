@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Settings\GeneralSetting;
 use App\Settings\WebsiteSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use RahulHaque\Filepond\Facades\Filepond;
 
 class SettingController extends Controller
 {
@@ -15,13 +17,12 @@ class SettingController extends Controller
     public function generalShow(GeneralSetting $setting)
     {
         return Inertia::render("Dashboard/Settings/General/Page",
-    // [
-    //     "timezone" =>  $setting->timezone,
-    //     "language" => $setting->language,
-    //     "date_format" => $setting->date_format,
-    //     "close_modal_on_page_click" => $setting->close_modal_on_page_click,
-    //     "pagination" => $setting->pagination,
-    // ]
+    [
+        "timezone" =>  $setting->timezone,
+        "date_format" => $setting->date_format,
+        "close_modal_on_page_click" => $setting->close_modal_on_page_click,
+        "pagination" => $setting->pagination,
+    ]
 );
     }
 
@@ -38,7 +39,9 @@ class SettingController extends Controller
         ]);
 
         foreach ($validated as $key => $value) {
-            $setting->$key = $value;
+            if ($value !== null) {
+                $setting->$key = $value;
+            }
         }
 
         $setting->save();
@@ -70,12 +73,23 @@ class SettingController extends Controller
             "front_page_heading" =>  "sometimes|string",
             "front_page_subheading" => "sometimes|string",
             "mission" => "sometimes|string",
-            "about_img" => "sometimes|string",
-            "front_img" => "sometimes|string",
+            "about_img" => "sometimes|string|nullable",
+            "front_img" => "sometimes|string|nullable",
+            "large_logo" => "sometimes|string|nullable",
+            "small_logo"=> "sometimes|string|nullable"
         ]);
 
+        $images = ["large_logo","small_logo","front_img","about_img"];
+
         foreach ($validated as $key => $value) {
-            $websiteSetting->$key = $value;
+            if (in_array($key,$images) && $value != null) {
+                $infos = Filepond::field($value)->moveTo("logo/".$key);
+                $value = $infos["location"];
+            }
+
+            if ($value !== null) {
+                $websiteSetting->$key = $value;
+            }
         }
 
         $websiteSetting->save();

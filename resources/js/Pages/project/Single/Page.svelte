@@ -2,7 +2,7 @@
 	import { page } from '@inertiajs/svelte';
 	import Navbar from '@/lib/components/guest/navbar.svelte';
 	import { onMount } from 'svelte';
-	import { base } from '@/lib/scripts/userStore';
+	import { asset, base } from '@/lib/scripts/userStore';
 	import Projects from '@/lib/components/guest/projects.svelte';
     import GuestLayout from '@/layouts/guestLayout.svelte';
 
@@ -67,7 +67,7 @@
         <main id="main">
         
             <!-- ======= Breadcrumbs ======= -->
-            <div class="breadcrumbs flex items-center" style="background-image: url('public/storage/project/home.jpg');">
+            <div class="breadcrumbs flex items-center" style="background-image: url('{asset}project/home.jpg');">
                 <div class="container relative flex flex-col items-center" data-aos="fade">
         
                     <h2>Project Details</h2>

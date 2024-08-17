@@ -31,7 +31,7 @@
         })
     }
     
-    const url = state === "new"? route("role.store") : route("role.store",{id});
+    const url = state === "new"? route("role.store") : route("role.update",{id});
 
     const submit = async () => {
         $form.post(url,{

@@ -10,95 +10,102 @@ declare module 'ziggy-js' {
     "profile.update": [],
     "profile.delete": [],
     "avatar.update": [],
-    "project.index": [],
-    "project.show": [
+    "guest.projects": [],
+    "projects.delete": [],
+    "guest.project.show": [
         {
-            "name": "id",
-            "required": true
+            "name": "project",
+            "required": true,
+            "binding": "id"
         }
     ],
     "project.update": [
         {
-            "name": "id",
-            "required": true
+            "name": "project",
+            "required": true,
+            "binding": "id"
         }
     ],
     "project.store": [],
     "project.delete": [
         {
-            "name": "id",
+            "name": "project",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "project.details": [
+        {
+            "name": "project",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "project.milestones": [
+        {
+            "name": "project",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "project.files": [
+        {
+            "name": "project",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "project.status.change": [],
+    "project.assigned.update": [
+        {
+            "name": "project",
             "required": true
         }
     ],
     "contractor.index": [],
     "contractor.show": [
         {
-            "name": "id",
-            "required": true
+            "name": "contractor",
+            "required": true,
+            "binding": "id"
         }
     ],
     "contractor.update": [
         {
-            "name": "id",
-            "required": true
+            "name": "contractor",
+            "required": true,
+            "binding": "id"
         }
     ],
     "contractor.store": [],
     "contractor.delete": [
         {
-            "name": "id",
-            "required": true
+            "name": "contractor",
+            "required": true,
+            "binding": "id"
         }
     ],
     "contractor.api": [],
     "team.index": [],
     "team.update": [
         {
-            "name": "id",
-            "required": true
+            "name": "user",
+            "required": true,
+            "binding": "id"
         }
     ],
     "team.delete": [
         {
-            "name": "id",
-            "required": true
+            "name": "user",
+            "required": true,
+            "binding": "id"
         }
     ],
     "team.api": [],
-    "project.details": [
-        {
-            "name": "id",
-            "required": true
-        }
-    ],
-    "project.milestones": [
-        {
-            "name": "id",
-            "required": true
-        }
-    ],
-    "project.files": [
-        {
-            "name": "id",
-            "required": true
-        }
-    ],
-    "project.status.change": [
-        {
-            "name": "id",
-            "required": true
-        }
-    ],
-    "project.assigned.update": [
-        {
-            "name": "id",
-            "required": true
-        }
-    ],
     "file.store": [],
     "file.delete": [
         {
-            "name": "id",
+            "name": "file",
             "required": true
         }
     ],
@@ -107,24 +114,49 @@ declare module 'ziggy-js' {
     "folder.store": [],
     "folder.delete": [
         {
-            "name": "id",
-            "required": true
+            "name": "folder",
+            "required": true,
+            "binding": "id"
         }
     ],
     "milestone.update": [
         {
-            "name": "id",
-            "required": true
+            "name": "milestone",
+            "required": true,
+            "binding": "id"
         }
     ],
     "milestone.store": [],
     "milestone.delete": [
         {
-            "name": "id",
-            "required": true
+            "name": "milestone",
+            "required": true,
+            "binding": "id"
         }
     ],
-    "register": [],
+    "setting.index": [],
+    "setting.general.show": [],
+    "setting.general.store": [],
+    "setting.website.show": [],
+    "setting.website.store": [],
+    "role.index": [],
+    "role.store": [],
+    "role.delete": [
+        {
+            "name": "role",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "role.permission.show": [
+        {
+            "name": "role",
+            "required": true,
+            "binding": "id"
+        }
+    ],
+    "home": [],
+    "about": [],
     "login": [],
     "password.request": [],
     "password.email": [],
@@ -135,6 +167,7 @@ declare module 'ziggy-js' {
         }
     ],
     "password.store": [],
+    "register": [],
     "verification.notice": [],
     "verification.verify": [
         {

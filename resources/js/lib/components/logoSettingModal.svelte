@@ -5,6 +5,7 @@
         ModalFooter,
         ModalHeader,
     } from "@sveltestrap/sveltestrap";
+    import { useForm } from "@inertiajs/svelte";
     import ModalCloseBtn from "./modals/modalCloseBtn.svelte";
     import 'filepond/dist/filepond.css';
     import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
@@ -53,8 +54,9 @@
 
 </script>
 
-<Modal>
+<Modal isOpen={true} keyboard={false} backdrop="static">
     <ModalHeader title="Update {parseStatus(placeholder)}">
+        <h4 class="modal-title text-capitalize">Update {parseStatus(placeholder).replace("img","image")}</h4>
         <ModalCloseBtn />
     </ModalHeader>
     <form action={route("setting.website.store")} method="post" on:submit|preventDefault={submit}>

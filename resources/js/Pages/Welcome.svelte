@@ -5,7 +5,11 @@
 	import AltService from '@/lib/components/guest/altService.svelte';
 	import Construction from '@/lib/components/guest/construction.svelte';
     import GuestLayout from '@/layouts/guestLayout.svelte';
+    import { asset } from '@/lib/scripts/userStore';
 
+    export let title;
+    export let subheading;
+    export let front_img;
     export let projects;
 </script>
 <GuestLayout>
@@ -18,15 +22,15 @@
             <div class="container">
                 <div class="flex flex-wrap justify-center">
                     <div class="lg:w-1/2 w-full text-center">
-                        <h2 data-aos="fade-down" class="capitalize">project implementation and monitoring unit</h2>
-                        <p data-aos="fade-up font-bold capitalize">we believe transparency is key. That's why we've developed zamfara state project monitoring software, a user-friendly platform dedicated to making government project and contract information readily available to the public.</p>
+                        <h2 data-aos="fade-down" class="capitalize">{title}</h2>
+                        <p data-aos="fade-up font-bold capitalize">{subheading}</p>
                     </div>
                 </div>
             </div>
         </div>
     
-        <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-            <div class="carousel-item active" style="background-image: url(public/storage/project/home1.jpg)"></div>
+        <div id="hero-carousel" class="carousel slide">
+            <div class="carousel-item active" style="background-image: url({asset+front_img})"></div>
         </div>
     
     </section><!-- End Hero Section -->

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Settings\WebsiteSetting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -32,6 +33,12 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'user' => $request->user(),
+            "large_logo" => function(WebsiteSetting $websiteSetting) {
+                return $websiteSetting->large_logo;
+            },
+            "small_logo" => function(WebsiteSetting $websiteSetting) {
+                return $websiteSetting->small_logo;
+            }
         ];
     }
 }

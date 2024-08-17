@@ -14,7 +14,7 @@ type User = {
 export const userStore = writable<User>()
 
 export const base = 'https://projectsmonitoring.com/'
-// export const base = 'http://localhost/'
+export const asset = import.meta.env.DEV? "storage/": "public/storage/";
 
 
 export const folders = writable<ProjectFolders>([])

@@ -21,9 +21,6 @@
 
     const submit = async () => {
         $form.post(route("setting.general.store"),{
-            onComplete: ()=>{
-                modal.close();
-            },
             onSuccess: ()=> {
                 notify({
                     title: "successful",
@@ -593,7 +590,9 @@
                         </div>
                     
                         <div class="text-right">
-                            <button type="submit" class="btn btn-rounded-x btn-danger text-left">Save Changes</button>
+                            <button type="submit" class="btn btn-rounded-x btn-danger text-left">Save Changes
+                                <div class="spinner-border spinner-border-sm text-primary"></div>
+                            </button>
                         </div>
                     </form>
                 </div>

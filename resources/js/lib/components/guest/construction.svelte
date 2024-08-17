@@ -1,5 +1,6 @@
 <script>
     import { parseStatus } from '@/lib/scripts/parceStatus';
+    import { asset } from '@/lib/scripts/userStore';
     import { inertia } from "@inertiajs/svelte";
 
 	export let projects;
@@ -9,7 +10,7 @@
     {#each projects as item}
         <div class="construction-card">
             <div class="card-image">
-                <img src="public/storage/{item.image}" alt="Project Image">
+                <img src="{asset}{item.image}" alt="Project Image">
             </div>
             <div class="card-content">
                 <h3 class="project-title">{item.title}</h3>

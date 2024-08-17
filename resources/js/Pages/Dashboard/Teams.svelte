@@ -2,7 +2,7 @@
 	import NothingFound from '@/lib/components/nothingFound.svelte';
     import { IconChevronDown, IconChevronUp, IconEdit, IconMail, IconPlus, IconSettings, IconTrash } from '@tabler/icons-svelte';
     import { modal } from '@/lib/scripts/modalToggler';
-    import { base } from '@/lib/scripts/userStore';
+    import { asset, base } from '@/lib/scripts/userStore';
     import { Delete } from '@/lib/scripts/deleteFromDb';
     import { readable } from 'svelte/store';
     import { Render, Subscribe, createTable } from 'svelte-headless-table';
@@ -125,7 +125,7 @@
                                                             <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
                                                             <td {...attrs}>
                                                                 {#if cell.column.id == 'name'}
-                                                                    <img src="public/storage/{row.original.avatar}" alt="{cell.value}" class="img-circle avatar-xsmall">
+                                                                    <img src="{asset+row.original.avatar}" alt="{cell.value}" class="img-circle avatar-xsmall">
                                                                     <Render of={cell.render()} />
                                                                 {:else}
                                                                     <Render of={cell.render()} />

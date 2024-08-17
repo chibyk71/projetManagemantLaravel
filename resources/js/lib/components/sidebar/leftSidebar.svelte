@@ -1,6 +1,11 @@
 <script>
   import { page } from "@inertiajs/svelte";
   import { IconHome, IconUser, IconFolder, IconChartAreaLine, IconSettingsAutomation, IconUsers, IconListCheck } from "@tabler/icons-svelte";
+
+  let url = $page.url;
+  
+  let setting = url.startsWith('/setting');
+  
 </script>
  <!-- ============================================================== -->
 <!-- Left Sidebar - style you can find in sidebar.scss  -->
@@ -22,7 +27,7 @@
 
                 <!--users[done]-->
                 <li data-modular-id="main_menu_team_clients" class="sidenav-menu-item has-submenu" class:active={$page.url.startsWith('/contractors')}>
-                    <a class="has-arrow " href='/contractors' aria-expanded="false">
+                    <a class="" href='/contractors' aria-expanded="false">
                         <IconUser class="sl-icon-people" />
                         <span class="hide-menu">Contractors </span>
                     </a>
@@ -31,7 +36,7 @@
 
                 <!--projects[done]-->
                 <li data-modular-id="main_menu_team_projects" class="sidenav-menu-item has-submenu" class:active={$page.url.startsWith('/projects')}>
-                    <a class="has-arrow" href='/projects' aria-expanded="false">
+                    <a class="" href='/projects' aria-expanded="false">
                         <IconFolder class="ti-folder" />
                         <span class="hide-menu">Projects </span>
                     </a>
@@ -41,7 +46,7 @@
                 <!--multipl menu-->
                 <li data-modular-id="main_menu_team_contracts" class="sidenav-menu-item has-submenu" class:active={$page.url.startsWith('/teams')}>
                     <!--multiple menu-->
-                    <a class="has-arrow " href='/teams' aria-expanded="false">
+                    <a class="" href='/teams' aria-expanded="false">
                         <IconUsers class="" />
                         <span class="hide-menu">Teams </span>
                     </a>
@@ -58,39 +63,23 @@
                 <!--knowledgebase-->
 
                 <!--other-->
-                <li class="sidenav-menu-item has-submenu" class:active={$page.url.startsWith('/setting')}>
-                    <a class="" href={void(0)} aria-expanded="true">
+                <li class="sidenav-menu-item has-submenu" class:active={setting}>
+                    <a class="has-arrow" href={void(0)} aria-expanded="true" on:click={()=>setting = !setting}>
                         <IconSettingsAutomation class="ti-panel" />
                         <span class="hide-menu">Setting </span>
                     </a>
-                    <ul aria-expanded="true" class="collapse in" style="">
+                    <ul aria-expanded="{setting}" class="collapse" class:in={setting}>
                         <li>
-                            <a href="/setting/general" id="settings-menu-main-general" class="settings-menu-link ">General Settings</a>
-                        </li>
-                        <!--[MULTITENANCY]-->
-                                                <li>
-                            <a href="/setting/modules" id="settings-menu-main-modules" class="settings-menu-link ">Modules</a>
+                            <a href="/setting/general" class:active={url.endsWith("/general")} class="settings-menu-link ">General Settings</a>
                         </li>
                         <li>
-                            <a href="/setting/company" id="settings-menu-main-company" class="settings-menu-link ">Company Details</a>
+                            <a href="/setting/website" class:active={url.endsWith("/website")} class="settings-menu-link ">Website Details</a>
                         </li>
                         <li>
-                            <a href="/setting/currency" id="settings-menu-main-currency" class="settings-menu-link ">Currency</a>
+                            <a href="/setting/role" class:active={url.endsWith("/role")} class="settings-menu-link ">Team Roles</a>
                         </li>
                         <li>
-                            <a href="/setting/theme" id="settings-menu-main-theme" class="settings-menu-link ">Theme</a>
-                        </li>
-                        <li>
-                            <a href="/setting/logos" id="settings-menu-main-logo" class="settings-menu-link ">Company Logo</a>
-                        </li>
-                        <li>
-                            <a href="/setting/cronjobs" id="settings-menu-main-cronjobs" class="settings-menu-link ">Cron Job Settings</a>
-                        </li>
-                        <li>
-                            <a href="/setting/system/clearcache" id="settings-menu-main-cronjobs" class="settings-menu-link ">Clear Cache</a>
-                        </li>
-                        <li>
-                            <a href="/setting/errorlogs" id="settings-menu-main-errorlogs" class="settings-menu-link ">Error Logs</a>
+                            <a href={route("sponsor.index")} class:active={url.endsWith("/sponsor")} class="settings-menu-link ">Sponsors</a>
                         </li>
                     </ul>
                 </li>

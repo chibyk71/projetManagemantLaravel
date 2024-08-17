@@ -2,7 +2,7 @@
 	import Avatar from '@/lib/components/avatar.svelte';
     import Progress from "@/lib/components/chart/progress.svelte";
   import { fDate } from '@/lib/scripts/fdate';
-    import { base } from "@/lib/scripts/userStore";
+    import { asset, base } from "@/lib/scripts/userStore";
     import ProjectLayout from './ProjectLayout.svelte';
 
     export let project;
@@ -127,7 +127,7 @@
                                     {#each project.notifications as {id,affected_user_id,message,date_created,created_by}}
                                         <div class="sl-item timeline">
                                             <div class="sl-left">
-                                                <img src="public/storage/avatar/'+created_by.avatar}" alt={created_by.name} class="img-circle">
+                                                <img src="{asset}avatar/{created_by.avatar}" alt={created_by.name} class="img-circle">
                                             </div>
                                             <div class="sl-right">
                                                 <div>

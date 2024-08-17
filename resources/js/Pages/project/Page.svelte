@@ -4,6 +4,7 @@
 	import Footer from '@/lib/components/guest/footer.svelte';
     import GuestLayout from '@/layouts/guestLayout.svelte';
 	import { inertia } from "@inertiajs/svelte";
+    import { asset } from '@/lib/scripts/userStore';
 
 	export let projects;
 </script>
@@ -14,7 +15,7 @@
 		<!-- ======= Breadcrumbs ======= -->
 		<div
 			class="breadcrumbs flex items-center"
-			style="background-image: url('public/storage/project/home.jpg');"
+			style="background-image: url('{asset}project/home.jpg');"
 		>
 			<div class="container relative flex flex-col items-center" data-aos="fade">
 				<h2>Projects</h2>

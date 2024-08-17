@@ -1,5 +1,5 @@
 <script>
-	import { base } from '@/lib/scripts/userStore';
+	import { asset, base } from '@/lib/scripts/userStore';
 	import AltService from '@/lib/components/guest/altService.svelte';
 	import Footer from '@/lib/components/guest/footer.svelte';
 	import Navbar from '@/lib/components/guest/navbar.svelte';
@@ -36,18 +36,12 @@
     
                 <div class="flex flex-wrap relative">
     
-                    <div class="lg:w-7/12 w-full about-img" style="background-image: url(public/storage/project/about.jpg);"></div>
+                    <div class="lg:w-7/12 w-full about-img" style="background-image: url({asset+data.about_img});"></div>
     
                     <div class="lg:w-7/12 w-full">
                         <div class="our-story sm:p-4 lg:p-10">
                             <h3>Our Mission</h3>
-                            <p>Our mission is to provide citizens with easy access to information about government contracts and projects.</p>
-                            <p>We aim to promote transparency and empower citizens by sharing project details in a user-friendly manner.</p>
-                            <ul class="lg:-mr-4">
-                                <li><IconSquareCheckFilled /> <span class="text-lg font-bold">Transparency</span>: <span>Citizens can access real-time information on government projects, fostering trust and accountability.</span></li>
-                                <li><IconSquareCheckFilled /> <span class="text-lg font-bold">Informed Decision-Making:</span> <span>By understanding project details, citizens can participate in discussions and provide feedback.</span></li>
-                                <li><IconSquareCheckFilled /> <span class="text-lg font-bold">Empowerment:</span>  <span>Accessible data allows citizens to monitor progress, identify issues, and engage with policymakers.</span></li>
-                            </ul>
+                            {@html data.mission}
                         </div>
                     </div>
     

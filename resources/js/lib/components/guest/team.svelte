@@ -1,6 +1,18 @@
 <script>
+    import { onMount } from "svelte";
+    let sponsors = null;
 
-	import { base } from "../../scripts/userStore";
+	import { asset } from "../../scripts/userStore";
+    import axios from "axios";
+
+    onMount(async ()=>{
+        await axios.get(route("sponsor.api"))
+        .then((res)=>{
+            sponsors = res.data
+        }).catch((e)=>{
+            console.log(e);  
+        })
+    })
 
 </script>
   <!-- ======= Our Team Section ======= -->
@@ -13,46 +25,19 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-y-5 place-content-center">
 
-            <div class="member" data-aos="fade-up" data-aos-delay="100">
-                <div class="member-img">
-                    <img src="public/storage/team/governor.jpg" class="img-fluid" alt="">
-                </div>
-                <div class="member-info text-center">
-                    <h4 class="uppercase"><small>His excellency</small> <b>dauda lawal</b></h4>
-                    <span class="capitalize">the executive governor of zamfara state</span>
-                </div>
-            </div><!-- End Team Member -->
-
-            <div class="member" data-aos="fade-up" data-aos-delay="200">
-                <div class="member-img">
-                    <img src="public/storage/team/dep_governor.jpg" class="img-fluid" alt="">
-                </div>
-                <div class="member-info text-center">               
-                    <h4 class="uppercase"><small>His excellency </small> <b>mal. mani mummuni</b></h4>
-                    <span class="capitalize">deputy governor zamfara state</span>
-                </div>
-            </div><!-- End Team Member -->
-
-            <div class="member" data-aos="fade-up" data-aos-delay="200">
-                <div class="member-img">
-                    <img src="public/storage/team/ssg.jpg" class="img-fluid" alt="">
-                </div>
-                <div class="member-info text-center">               
-                    <h4 class="uppercase"><small>Mal </small> <b>abubakar nakwada</b></h4>
-                    <span class="capitalize">secretary to the state government</span>
-                </div>
-            </div><!-- End Team Member -->
-
-            <div class="member" data-aos="fade-up" data-aos-delay="200">
-                <div class="member-img">
-                    <img src="public/storage/team/commissioner.jpg" class="img-fluid" alt="">
-                </div>
-                <div class="member-info text-center">               
-                    <h4 class="uppercase"><small>Hon </small> <b>nasiru ibrahim</b></h4>
-                    <span class="capitalize">zamfara state commissioner of project implementation and monitoring</span>
-                </div>
-            </div><!-- End Team Member -->
-
+            {#if sponsors}
+                {#each sponsors as {image,title,name,description}, index (image)}
+                    <div class="member" data-aos="fade-up" data-aos-delay="100">
+                        <div class="member-img">
+                            <img src="{asset+image}" class="img-fluid" alt="">
+                        </div>
+                        <div class="member-info text-center">
+                            <h4 class="uppercase"><small>{title}</small> <b>{name}</b></h4>
+                            <span class="capitalize">{description}</span>
+                        </div>
+                    </div><!-- End Team Member -->
+                {/each}
+            {/if}
         </div>
 
     </div>

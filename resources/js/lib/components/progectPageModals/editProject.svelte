@@ -12,6 +12,7 @@
     import { modal } from '@/lib/scripts/modalToggler';
     import { notify } from '@/lib/scripts/notify';
     import { removeLeadingAsterisk } from '@/lib/scripts/removeLeadingAsterics';
+    import { asset } from '@/lib/scripts/userStore';
         
     export let state: 'new'|'edit' = 'new'
     export let user;
@@ -146,7 +147,7 @@
                     <!--DESCRIPTION & DETAILS-->
                     <Spacers title='Description &amp; Details'>
                         <svelte:fragment slot="content">
-                            <Editor conf={OptionTinyMce} bind:value={$form.description} scriptSrc='public/storage/tinymce/tinymce.min.js' />
+                            <Editor conf={OptionTinyMce} bind:value={$form.description} scriptSrc='{asset}tinymce/tinymce.min.js' />
                             <Input value="description" name='description' type='text' class='d-none' invalid={!!$form.errors.description} feedback={$form.errors.description}/>
                         </svelte:fragment>
                     </Spacers>

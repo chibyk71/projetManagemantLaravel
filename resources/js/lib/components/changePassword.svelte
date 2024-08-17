@@ -3,7 +3,7 @@
     import { useForm } from "@inertiajs/svelte";
     import { modal } from "@/lib/scripts/modalToggler";
     import { notify } from "@/lib/scripts/notify";
-    import { base } from "@/lib/scripts/userStore";
+    import { asset, base } from "@/lib/scripts/userStore";
     import { Input, Modal } from "@sveltestrap/sveltestrap";
     import { IconX } from "@tabler/icons-svelte";
     
@@ -37,7 +37,7 @@
         <div class="modal-body min-h-200">
             <div class="splash-image" id="updatePasswordSplash">
                 <img
-                    src="public/storage/images/authentication-update-password.png"
+                    src="{asset}images/authentication-update-password.png"
                     alt="404 - Not found"
                 />
             </div>

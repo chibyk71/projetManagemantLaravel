@@ -11,9 +11,11 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectInfoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TeamController;
 use App\Models\Project;
 use App\Settings\GeneralSetting;
+use App\Settings\WebsiteSetting;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -78,11 +80,16 @@ Route::middleware('auth')->group(function () {
     Route::post("/create/roles", [RoleController::class, "store"])->name("role.store");
     Route::delete("/role/{role}", [RoleController::class, "destroy"])->name("role.delete");
     Route::get("role/permission/{role}", [RoleController::class, "permissions"])->name("role.permission.show");
+
+    Route::get("setting/sponsors", [SponsorController::class, "index"])->name("sponsor.index");
+    Route::post("setting/sponsor", [SponsorController::class, "store"])->name("sponsor.store");
+    Route::post("setting/sponsor/{sponsor}", [SponsorController::class, "update"])->name("sponsor.update");
+    Route::delete("sponsor/{sponsor}", [SponsorController::class, "destroy"])->name("sponsor.delete");
 });
 
 Route::middleware("guest")->group(function () {
     Route::get('/', [GuestProjectController::class, "home"])->name("home");
-    Route::get("/about", function () {
+    Route::get("/about", function (WebsiteSetting $websiteSetting) {
         $totalProjects = Project::count();
         $completedProjects = Project::where('status', 'COMPLETED')->count();
         $ongoingProjects = Project::where('status', 'IN_PROGRESS')->count();
@@ -91,11 +98,14 @@ Route::middleware("guest")->group(function () {
             'total_projects' => $totalProjects,
             'completed_projects' => $completedProjects,
             'ongoing_projects' => $ongoingProjects,
+            "about_img" => $websiteSetting->about_img,
+            "mission"=> $websiteSetting->mission
         ]]);
     })->name("about");
 
     Route::get("projects", [GuestProjectController::class, "index"])->name("guest.projects");
     Route::get("project/{project}", [GuestProjectController::class, "show"])->name("guest.project.show");
+    Route::get("sponsor/api", [SponsorController::class, "api"])->name('sponsor.api');
 });
 
 

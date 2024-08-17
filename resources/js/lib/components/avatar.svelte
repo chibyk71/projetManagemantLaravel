@@ -1,5 +1,5 @@
 <script>
-  import { base } from "@/lib/scripts/userStore";
+  import { asset, base } from "@/lib/scripts/userStore";
     import { Tooltip } from "@sveltestrap/sveltestrap";
     let image
     export let title = "Annie"
@@ -10,5 +10,5 @@
 
 </script>
 
-<img bind:this={image} src='public/storage/{src}' alt={title} class="img-circle avatar-xsmall">
+<img bind:this={image} src='{asset+src}' alt={title} class="img-circle avatar-xsmall">
 <Tooltip target={image}>{title}</Tooltip>

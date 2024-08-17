@@ -10,7 +10,7 @@
     import UpdateAvatar from '@/lib/components/updateAvatar.svelte';
     import UpdateProfile from '@/lib/components/updateProfile.svelte';
     import ChangePassword from '@/lib/components/changePassword.svelte';
-    import { base, userStore } from '@/lib/scripts/userStore';
+    import { asset, userStore } from '@/lib/scripts/userStore';
     import Add from '@/Pages/Dashboard/Contractors/add.svelte';
     import EditProject from '@/lib/components/progectPageModals/editProject.svelte';
     import { page,inertia } from "@inertiajs/svelte";
@@ -59,8 +59,8 @@
                     <!--logo-->
                     <div class="sidenav-menu-item logo m-t-0">
                         <a class="navbar-brand" href="/">
-                            <img src="public/storage/logos/app/logo-small.png" alt="homepage" class="logo-small"/>
-                            <img src="public/storage/logos/app/logo.png" alt="homepage" class="logo-large"/>
+                            <img src="{asset}logos/app/logo-small.png" alt="homepage" class="logo-small"/>
+                            <img src="{asset}logos/app/logo.png" alt="homepage" class="logo-large"/>
                         </a>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                         <!-- profile -->
                         <Dropdown nav class='nav-item u-pro'>
                             <DropdownToggle nav class="nav-link p-l-20 p-r-20 waves-dark profile-pic">
-                                <img src="public/storage/{user?.avatar|| 'avatar.jpg'}" id="topnav_avatar" alt="user" class=""/>
+                                <img src="{asset}{user?.avatar|| 'avatar.jpg'}" id="topnav_avatar" alt="user" class=""/>
                                 <span class="hidden-md-down" id="topnav_username">{user?.name.split(' ')[0]|| 'Visitor'}</span>                       
                             </DropdownToggle>
                             <DropdownMenu class='animate__flipInY animate__animated dropdown-menu-right'>
@@ -196,7 +196,7 @@
                                         <li>
                                             <div class="dw-user-box d-flex align-items-start">
                                                 <div class="u-img">
-                                                    <img src="public/storage/{user?.avatar}" alt="user"/>
+                                                    <img src="{asset}{user?.avatar}" alt="user"/>
                                                 </div>
                                                 <div class="u-text flex-fill">
                                                     <h4 class="text-capitalize">{user?.name}</h4>

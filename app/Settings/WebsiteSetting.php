@@ -13,6 +13,11 @@ class WebsiteSetting extends Settings
     public string $mission;
     public string $front_img;
     public string $about_img;
+
+    public string $large_logo;
+
+    public string $small_logo;
+
     public static function group(): string
     {
         return 'website';
